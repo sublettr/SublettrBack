@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sublettr.app", "Sublettr.App\Sublettr.App.csproj", "{DE52B33A-8737-4F0E-BB96-180367936DCE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sublettr.api", "Sublettr.api\Sublettr.api.csproj", "{2D35B5DE-7048-447E-9ABE-EDA4BBCF4C5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sublettr.server", "Sublettr.server\Sublettr.server.csproj", "{238BE492-E099-4CC7-B17A-05837BB2CE6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +11,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DE52B33A-8737-4F0E-BB96-180367936DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE52B33A-8737-4F0E-BB96-180367936DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE52B33A-8737-4F0E-BB96-180367936DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE52B33A-8737-4F0E-BB96-180367936DCE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D35B5DE-7048-447E-9ABE-EDA4BBCF4C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D35B5DE-7048-447E-9ABE-EDA4BBCF4C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D35B5DE-7048-447E-9ABE-EDA4BBCF4C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D35B5DE-7048-447E-9ABE-EDA4BBCF4C5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238BE492-E099-4CC7-B17A-05837BB2CE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238BE492-E099-4CC7-B17A-05837BB2CE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238BE492-E099-4CC7-B17A-05837BB2CE6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238BE492-E099-4CC7-B17A-05837BB2CE6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
