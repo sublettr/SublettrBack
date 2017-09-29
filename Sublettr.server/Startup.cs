@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Sublettr.server
 {
@@ -22,6 +23,16 @@ namespace Sublettr.server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info 
+                {
+                    Title = "Sublettr API", 
+                    Version = "v1",
+					Description = "An ASP.NET Core Web API for Sublettr",
+					TermsOfService = "None",
+					Contact = new Contact { Name = "Joel Van Auken", Email = "jvanauke@purdue.edu", Url = "" }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,12 +49,12 @@ namespace Sublettr.server
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Sublet}/{action=sublet}/{id?}");
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sublettr API V1");
             });
+
+            app.UseMvc();
         }
     }
 }

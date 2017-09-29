@@ -12,6 +12,7 @@ namespace Sublettr.server.Controllers
     [Route("app/[controller]")]
     public class SubletController : Controller
     {
+        [Produces("application/json")]
         [HttpGet("/sublet/{id}")]
         public Sublet GetSublet(int id)
         {
