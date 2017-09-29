@@ -17,6 +17,6 @@ namespace Sublettr.server.Controllers
         public Sublet GetSublet(int id)
         {
             return new Sublet();
-        }
+        } 
     }
 }
