@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  sublettr:
+    image: sublettr:dev
+    build:
+      args:
+        source: obj/Docker/empty/
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - NUGET_PACKAGES=C:\.nuget\packages
+      - NUGET_FALLBACK_PACKAGES=c:\.nuget\fallbackpackages
+    volumes:
+      - E:\Git\Sublettr\SublettrBack\sublettr\sublettr:C:\app
+      - C:\Users\Joel\onecoremsvsmon:C:\remote_debugger:ro
+      - C:\Users\Joel\.nuget\packages\:C:\.nuget\packages:ro
+      - C:\Users\Joel\.nuget\packages\:c:\.nuget\fallbackpackages:ro
+
+    entrypoint: powershell -Command [System.Threading.Thread]::Sleep([System.Threading.Timeout]::Infinite)
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "C:\\Program Files\\dotnet\\dotnet.exe"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath c:\\.nuget\\fallbackpackages  bin/Debug/netcoreapp1.1/sublettr.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "C:\\app"
+      com.microsoft.visualstudio.debuggee.killprogram: "powershell -Command if ((Get-Process dotnet -ErrorAction SilentlyContinue).Count -gt 0) { Stop-Process -Name dotnet }"

@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  sublettr:
+    build:
+      args:
+        source: obj/Docker/publish/
+    volumes:
+      - C:\Users\Joel\onecoremsvsmon:C:\remote_debugger:ro
+    entrypoint: powershell -Command [System.Threading.Thread]::Sleep([System.Threading.Timeout]::Infinite)
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "C:\\Program Files\\dotnet\\dotnet.exe"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath c:\\.nuget\\fallbackpackages  sublettr.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "C:\\app"
+      com.microsoft.visualstudio.debuggee.killprogram: "powershell -Command if ((Get-Process dotnet -ErrorAction SilentlyContinue).Count -gt 0) { Stop-Process -Name dotnet }"
