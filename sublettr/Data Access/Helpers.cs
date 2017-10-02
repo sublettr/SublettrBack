@@ -9,7 +9,8 @@ namespace sublettr.DataAccess
 		{
 			//var appConfig = ConfigurationManager.AppSettings;
 
-			string dbname = appConfig["RDS_DB_NAME"];
+			//string dbname = appConfig["RDS_DB_NAME"];
+			string dbname = "ebdb";
 
 			if (string.IsNullOrEmpty(dbname)) return null;
 
@@ -21,8 +22,8 @@ namespace sublettr.DataAccess
             
             string username = "sublettr";
             string password = "SublettrDB1";
-            string hostname = appConfig["RDS_HOSTNAME"];
-            string port = appConfig["RDS_PORT"];
+            string hostname = "aa1ifpy5jgsf0qc.cpmnsheie0ox.us-east-2.rds.amazonaws.com";
+            //string port = "3306";
 
 			return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";";
 		}
