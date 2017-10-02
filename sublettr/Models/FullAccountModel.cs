@@ -1,18 +1,19 @@
 ﻿using System;
 namespace sublettr.Models
 {
-    public class UserDataModel
+    public class FullAccountModel
     {
 
-        public UserDataModel(int id)
+        public FullAccountModel(int id)
         {
             this.id = id;
             this.isSeller = false;
         }
 
-        public UserDataModel(int id, int age, string sex, string major, int year, bool isSeller)
+        public FullAccountModel(int id, string username, int age, string sex, string major, int year, bool isSeller)
         {
             this.id = id;
+            this.username = username;
             this.age = age;
             this.sex = sex;
             this.major = major;
@@ -21,6 +22,7 @@ namespace sublettr.Models
         }
 
         public int id { get; set; }
+        public string username { get; set; }
         public int age { get; set; }
         public string sex { get; set; }
         public string major { get; set; }
