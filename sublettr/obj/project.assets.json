@@ -9809,11 +9809,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\sublettr\\sublettr.csproj",
+      "projectUniqueName": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\sublettr.csproj",
       "projectName": "sublettr",
-      "projectPath": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\sublettr\\sublettr.csproj",
+      "projectPath": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\sublettr.csproj",
       "packagesPath": "C:\\Users\\Joel\\.nuget\\packages\\",
-      "outputPath": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\sublettr\\obj\\",
+      "outputPath": "E:\\Git\\Sublettr\\SublettrBack\\sublettr\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Joel\\AppData\\Roaming\\NuGet\\NuGet.Config",
