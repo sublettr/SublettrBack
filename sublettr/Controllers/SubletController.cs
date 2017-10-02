@@ -24,12 +24,12 @@ namespace sublettr.Controllers
             return new SubletModel(1, 1, "Test Address");
         }
 
-		// GET api/sublet/full/5
-		[HttpGet("full/{id}")]
-		public FullSubletModel GetFull(int id)
-		{
-            return new FullSubletModel(1, 1, "Test Address", 1, false);
-		}
+        // GET api/sublet/full/5
+        [HttpGet("full/{id}")]
+        public FullSubletModel GetFull(int id)
+        {
+            return new FullSubletModel(1, 1, "test Address");
+        }
 
         // POST api/sublet/full
         [HttpPost("full")]
