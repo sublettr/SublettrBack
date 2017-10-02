@@ -21,8 +21,8 @@ namespace sublettr.DataAccess
             
             string username = "sublettr";
             string password = "SublettrDB1";
-            //string hostname = appConfig["RDS_HOSTNAME"];
-            //string port = appConfig["RDS_PORT"];
+            string hostname = appConfig["RDS_HOSTNAME"];
+            string port = appConfig["RDS_PORT"];
 
 			return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";";
 		}
