@@ -10,33 +10,40 @@ namespace sublettr.Controllers
     [Route("api/[controller]")]
     public class SubletController : Controller
     {
-        // GET api/values
+        // GET api/sublet  
         [HttpGet]
         public IEnumerable<SubletModel> Get()
         {
-            return new SubletModel[] { };
+            return new SubletModel[] { new SubletModel(1, 1, "Test Sublet") , new SubletModel(1, 1, "Test Sublet") };
         }
 
-        // GET api/values/5
+        // GET api/sublet/5
         [HttpGet("{id}")]
         public SubletModel Get(int id)
         {
-            return new SubletModel(1, "Test Sublet");
+            return new SubletModel(1, 1, "Test Sublets");
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]SubletModel value)
+        // GET api/sublet/full/5
+        [HttpGet("full/{id}")]
+        public FullSubletModel GetFull(int id)
+        {
+            return new FullSubletModel(1, 1, "test Address");
+        }
+
+        // POST api/sublet/full
+        [HttpPost("full")]
+        public void PostFull([FromBody]FullSubletModel value)
         {
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]SubletModel value)
+        // PUT api/sublet/full/5
+        [HttpPut("full/{id}")]
+        public void Put(int id, [FromBody]FullSubletModel value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/sublet/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
