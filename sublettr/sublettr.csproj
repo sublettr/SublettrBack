@@ -30,4 +30,8 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.Caching.SqlConfig.Tools" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\FullUserModel.cs" />
+    <Compile Remove="Models\UserModel.cs" />
+  </ItemGroup>
 </Project>

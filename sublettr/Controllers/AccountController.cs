@@ -14,34 +14,34 @@ namespace sublettr.Controllers
     {
         // GET: api/account
         [HttpGet]
-        public IEnumerable<UserModel> Get()
+        public IEnumerable<AccountModel> Get()
         {
-            return new UserModel[] {  };
+            return new AccountModel[] {  };
         }
 
         // GET api/account/5
         [HttpGet("{id}")]
-        public UserModel Get(int id)
+        public AccountModel Get(int id)
         {
-            return new UserModel(1, "myUserName");
+            return new AccountModel(1, "myUserName");
         }
 
 		// GET api/account/full/5
 		[HttpGet("full/{id}")]
-		public UserModel GetFull(int id)
+        public AccountModel GetFull(int id)
 		{
-			return new UserModel(1, "myUserName");
+            return new AccountModel(1, "myUserName");
 		}
 
         // POST api/account
         [HttpPost]
-        public void Post([FromBody]UserModel value)
+        public void Post([FromBody]AccountModel value)
         {
         }
 
         // PUT api/account/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]UserModel value)
+        public void Put(int id, [FromBody]AccountModel value)
         {
         }
 
