@@ -10,18 +10,18 @@ namespace sublettr.Controllers
     [Route("api/[controller]")]
     public class SubletController : Controller
     {
-        // GET api/sublet
+        // GET api/sublet  
         [HttpGet]
         public IEnumerable<SubletModel> Get()
         {
-            return new SubletModel[] { };
+            return new SubletModel[] { new SubletModel(1, 1, "Test Sublet") , new SubletModel(1, 1, "Test Sublet") };
         }
 
         // GET api/sublet/5
         [HttpGet("{id}")]
         public SubletModel Get(int id)
         {
-            return new SubletModel(1, 1, "Test Sublet");
+            return new SubletModel(1, 1, "Test Sublets");
         }
 
         // GET api/sublet/full/5
