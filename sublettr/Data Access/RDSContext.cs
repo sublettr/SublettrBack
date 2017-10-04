@@ -5,10 +5,10 @@ namespace sublettr.DataAccess
 {
 	public class RDSContext : DbContext
 	{
-		public RDSContext()
-		  : base(GetRDSConnectionString())
-		{
-		}
+		//public RDSContext()
+		//  : base(GetRDSConnectionString())
+		//{
+		//}
 
 		public static RDSContext Create()
 		{

@@ -21,11 +21,7 @@ namespace sublettr.Controllers
         [HttpGet("{id}")]
         public SubletModel Get(int id)
         {
-<<<<<<< 8b7cee6020520c26d864a5e4f589590568d04c9f
-            return new SubletModel(1, 1, "Test Address");
-=======
             return new SubletModel(1, 1, "Test Sublet");
->>>>>>> user models, account controller
         }
 
         // GET api/sublet/full/5
