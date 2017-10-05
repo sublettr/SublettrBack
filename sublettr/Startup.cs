@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using sublettr.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace sublettr
 {
@@ -41,6 +43,9 @@ namespace sublettr
                     Contact = new Contact { Name = "Joel Van Auken", Email = "jvanauke@purdue.edu", Url = "" }
                 });
             });
+
+            services.AddDbContext<RDSContext>(options =>
+            options.UseMySQL(Helpers.GetRDSConnectionString()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

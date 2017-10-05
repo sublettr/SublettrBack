@@ -7,26 +7,27 @@ namespace sublettr.Models
 {
     public class SubletModel
     {
-       
-		public int id { get; set; }
-		public int userId { get; set; }
-		public string address { get; set; }
-		public string description { get; set; }
+        public int ID { get; set; }
+		public int UserId { get; set; }
+		public string Address { get; set; }
+		public string Description { get; set; }
 
-        public SubletModel(int id, int userId, string address)
+        public SubletModel()
         {
-            this.userId = userId;
-            this.id = id;
-            this.address = address;
-            this.description = "New Sublet";
         }
 
-        public SubletModel(int id, int userId, string address, string desc)
+        public SubletModel(int userId, string address)
         {
-            this.userId = userId;
-            this.id = id;
-            this.address = address;
-            this.description = desc;
+            this.UserId = userId;
+            this.Address = address;
+            this.Description = "New Sublet";
+        }
+
+        public SubletModel(int userId, string address, string desc)
+        {
+            this.UserId = userId;
+            this.Address = address;
+            this.Description = desc;
         }
 
     }
