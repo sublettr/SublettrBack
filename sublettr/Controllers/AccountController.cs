@@ -38,7 +38,7 @@ namespace sublettr.Controllers
 		[HttpGet("full/{id}")]
         public FullAccountModel GetFull(int id)
 		{
-            return new FullAccountModel(1, "jpurdue", 22, "male", "Computer Science", 3, false);
+            return new FullAccountModel(1, "john@purdue.edu", "pa$$w0rd", "John Purdue", 22, "Male", "Computer Science", 3, false);
 		}
 
         // POST api/account

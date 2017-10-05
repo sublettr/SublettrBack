@@ -39,7 +39,7 @@ namespace sublettr.DataAccess
 
             foreach (AccountModel account in accounts)
             {
-                context.Accounts.Add((account));
+                context.Accounts.Add(account);
             }
 
             context.SaveChanges();
