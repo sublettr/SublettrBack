@@ -3,13 +3,13 @@ namespace sublettr.Models
 {
 	public class AccountModel
 	{
-		public int id { get; set; }
-		public string username { get; set; }
+		public int Id { get; set; }
+		public string Username { get; set; }
 
 		public AccountModel(int id, string username)
 		{
-			this.id = id;
-			this.username = username;
+			this.Id = id;
+			this.Username = username;
 		}
 	}
 }

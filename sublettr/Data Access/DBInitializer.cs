@@ -29,12 +29,25 @@ namespace sublettr.DataAccess
             {
                 context.Sublets.Add(sublet);
             }
+
+            var accounts = new AccountModel[] {
+                new AccountModel(1, "jnewlin"),
+                new AccountModel(2, "jvanauke"),
+                new AccountModel(3, "jwlehman"),
+                new AccountModel(4, "vieck")
+            };
+
+            foreach (AccountModel account in accounts)
+            {
+                context.Accounts.Add((account));
+            }
+
             context.SaveChanges();
         }
 
         private static bool IsSeeded(RDSContext context)
         {
-            return context.Users.Any() || context.Sublets.Any();
+            return context.Accounts.Any() || context.Sublets.Any();
           
         }
     }

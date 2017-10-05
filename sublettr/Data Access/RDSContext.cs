@@ -12,7 +12,7 @@ namespace sublettr.DataAccess
         }
 
         public DbSet<SubletModel> Sublets { get; set; }
-        public DbSet<UserModel> Users { get; set; }
+        public DbSet<AccountModel> Accounts { get; set; }
 
 	}
 }
