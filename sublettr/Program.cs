@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using sublettr.DataAccess;
 
 namespace sublettr
 {
@@ -20,7 +23,20 @@ namespace sublettr
                 .UseApplicationInsights()
                 .Build();
 
-            host.Run();
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<RDSContext>();
+                    DBInitializer.Initialize(context);
+                }catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex + " An error occured while seeding the database");
+                }
+            }
+                host.Run();
         }
     }
 }

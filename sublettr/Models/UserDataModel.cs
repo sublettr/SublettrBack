@@ -5,32 +5,32 @@ namespace sublettr.Models
     {
         public UserDataModel()
         { }
-            public int id
+            public int Id
         {
             get;
             set;
         }
-        public int age
+        public int Age
         {
             get;
             set;
         }
-        public string sex
+        public string Sex
         {
             get;
             set;
         }
-        public string major
+        public string Major
         {
             get;
             set;
         }
-        public int year
+        public int Year
         {
             get;
             set;
         }
-        public bool isSeller
+        public bool IsSeller
         {
             get;
             set;
