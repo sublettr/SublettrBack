@@ -45,7 +45,12 @@ namespace sublettr.Controllers
         [HttpPost]
         public void Post([FromBody]AccountModel value)
         {
-            _context.Accounts.Add(value);
+            AccountModel account = Get(value.Id);
+            if (account == null)
+            {
+                _context.Accounts.Add(value);
+            }
+
         }
 
         // PUT api/account/5

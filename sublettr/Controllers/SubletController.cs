@@ -5,31 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using sublettr.Models;
 using sublettr.DataAccess;
+using sublettr.Repos;
 
 namespace sublettr.Controllers
 {
     [Route("api/[controller]")]
     public class SubletController : Controller
     {
-        private readonly RDSContext _context;
-
-        public SubletController(RDSContext context)
+        private SubletRepo _subletRepo;
+        public SubletController(SubletRepo sr)
         {
-            _context = context;
+            _subletRepo = sr;
         }
 
         // GET api/sublet  
         [HttpGet]
         public IEnumerable<SubletModel> Get()
         {
-            return _context.Sublets.ToList();
+            return _subletRepo.GetSublets();
         }
 
         // GET api/sublet/5
         [HttpGet("{id}")]
         public SubletModel Get(int id)
         {
-            return new SubletModel(1, "Test Sublets");
+            return _subletRepo.GetSublet(id);
         }
 
         // GET api/sublet/full/5
