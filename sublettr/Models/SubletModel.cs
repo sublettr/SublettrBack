@@ -8,7 +8,7 @@ namespace sublettr.Models
     public class SubletModel
     {
         public int ID { get; set; }
-		public int UserId { get; set; }
+		public int UserID { get; set; }
 		public string Address { get; set; }
 		public string Description { get; set; }
 
@@ -18,14 +18,14 @@ namespace sublettr.Models
 
         public SubletModel(int userId, string address)
         {
-            this.UserId = userId;
+            this.UserID = userId;
             this.Address = address;
             this.Description = "New Sublet";
         }
 
         public SubletModel(int userId, string address, string desc)
         {
-            this.UserId = userId;
+            this.UserID = userId;
             this.Address = address;
             this.Description = desc;
         }
