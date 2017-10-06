@@ -29,7 +29,7 @@ namespace sublettr.Controllers
         [HttpGet("{id}")]
         public SubletModel Get(int id)
         {
-            return _subletRepo.getSublet(id);
+            return _subletRepo.GetSublet(id);
         }
 
         // GET api/sublet/full/5

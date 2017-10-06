@@ -12,13 +12,15 @@ namespace sublettr.Mappers
 
         public FullAccountModel Map(UserModel model, UserDataEntity entity)
         {
-            FullAccountModel fam = new FullAccountModel(model.ID);
-            fam.Username = model.Username;
-            fam.Age = entity.Age;
-            fam.IsSeller = entity.Seller;
-            fam.Major = entity.Major;
-            fam.Sex = entity.Sex;
-            fam.Year = entity.Year;
+            FullAccountModel fam = new FullAccountModel(model.ID)
+            {
+                Username = model.Username,
+                Age = entity.Age,
+                IsSeller = entity.Seller,
+                Major = entity.Major,
+                Sex = entity.Sex,
+                Year = entity.Year
+            };
 
             return fam;
         }

@@ -7,6 +7,7 @@ namespace sublettr.Entities
 {
     public class SubletDataEntity
     {
+        public int ID { get; set; }
         public int SubletID { get; set; }
         public int UserID { get; set; }
         public string Description { get; set; }

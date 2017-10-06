@@ -21,7 +21,7 @@ namespace sublettr.Repos
             _mapper = mapper;
         }
 
-        public SubletModel getSublet(int id)
+        public SubletModel GetSublet(int id)
         {
             SubletModel sr = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
 
