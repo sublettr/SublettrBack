@@ -3,7 +3,7 @@ namespace sublettr.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
 		public string Username { get; set; }
 
         public UserModel()
@@ -12,7 +12,7 @@ namespace sublettr.Models
 
         public UserModel(int id, string username)
         {
-            this.Id = id;
+            this.ID = id;
             this.Username = username;
         }
     }

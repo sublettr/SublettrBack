@@ -22,7 +22,7 @@ namespace sublettr.Controllers
         [HttpGet]
         public IEnumerable<SubletModel> Get()
         {
-            return _subletRepo.getSublets();
+            return _subletRepo.GetSublets();
         }
 
         // GET api/sublet/5

@@ -1,4 +1,6 @@
 ﻿using sublettr.DataAccess;
+using sublettr.Entities;
+using sublettr.Mappers;
 using sublettr.Models;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,12 @@ namespace sublettr.Repos
     {
 
         private readonly RDSContext _context;
+        private readonly SubletMapper _mapper;
 
-        public SubletRepo(RDSContext context)
+        public SubletRepo(RDSContext context, SubletMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public SubletModel getSublet(int id)
@@ -24,10 +28,17 @@ namespace sublettr.Repos
             return sr;
         }
 
-        public IList<SubletModel> getSublets()
+        public IList<SubletModel> GetSublets()
         {
             return _context.Sublets.ToList();
         }
 
+        public FullSubletModel GetFullSublet(int id)
+        {
+            SubletModel sm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
+            SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.UserID == sm.UserID).FirstOrDefault();
+            FullSubletModel fsm = _mapper.Map(sm, sde);
+            return fsm;
+        }
     }
 }
