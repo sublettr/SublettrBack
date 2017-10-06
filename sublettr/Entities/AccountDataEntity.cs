@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace sublettr.Entities
 {
-    public class UserDataEntity
+    public class AccountDataEntity
     {
         public int UserID { get; set; }
         public int Age { get; set; }

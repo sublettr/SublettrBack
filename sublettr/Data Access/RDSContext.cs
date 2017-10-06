@@ -20,7 +20,7 @@ namespace sublettr.DataAccess
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             modelbuilder.Entity<SubletModel>().ToTable("Sublets");
-            modelbuilder.Entity<UserModel>().ToTable("Users");
+            modelbuilder.Entity<AccountModel>().ToTable("Accounts");
             modelbuilder.Entity<SubletDataEntity>().ToTable("SubletData");
         }
     }

@@ -10,7 +10,7 @@ namespace sublettr.Mappers
     public class AccountMapper
     {
 
-        public FullAccountModel Map(UserModel model, UserDataEntity entity)
+        public FullAccountModel Map(AccountModel model, AccountDataEntity entity)
         {
             FullAccountModel fam = new FullAccountModel(model.ID)
             {

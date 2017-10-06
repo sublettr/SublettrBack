@@ -5,52 +5,44 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using sublettr.DataAccess;
 using sublettr.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using sublettr.Repos;
 
 namespace sublettr.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly RDSContext _context;
-
-		public AccountController(RDSContext context)
+        private readonly AccountRepo _accountRepo;
+        public AccountController(AccountRepo ar)
 		{
-			_context = context;
+            _accountRepo = ar;
 		}
 
         // GET: api/account
         [HttpGet]
         public IEnumerable<AccountModel> Get()
         {
-            return _context.Accounts.ToList();
+            return _accountRepo.GetAccounts();
         }
 
         // GET api/account/5
         [HttpGet("{id}")]
         public AccountModel Get(int id)
         {
-            return _context.Accounts.Find(id);
+            return _accountRepo.GetAccount(id);
         }
 
 		// GET api/account/full/5
 		[HttpGet("full/{id}")]
         public FullAccountModel GetFull(int id)
 		{
-            return new FullAccountModel(1, "john@purdue.edu", "pa$$w0rd", "John Purdue", 22, "Male", "Computer Science", 3, false);
+            return new FullAccountModel(1, "john@purdue.edu", "pa$$w0rd", "John Purdue", 22, "Male", "Computer Science", "3", false);
 		}
 
         // POST api/account
         [HttpPost]
         public void Post([FromBody]AccountModel value)
         {
-            AccountModel account = Get(value.Id);
-            if (account == null)
-            {
-                _context.Accounts.Add(value);
-            }
-
         }
 
         // PUT api/account/5
