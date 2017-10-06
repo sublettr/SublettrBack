@@ -17,7 +17,7 @@ namespace sublettr.Models
             this.IsSeller = false;
         }
 
-        public FullAccountModel(int id, string username, int age, string sex, string major, int year, bool isSeller)
+        public FullAccountModel(int id, string username, int age, string sex, string major, string year, bool isSeller)
         {
             this.ID = id;
             this.Username = username;
