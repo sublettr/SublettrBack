@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using sublettr.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using sublettr.Repos;
 
 namespace sublettr
 {
@@ -46,6 +47,8 @@ namespace sublettr
 
             services.AddDbContext<RDSContext>(options =>
             options.UseMySQL(Helpers.GetRDSConnectionString()));
+
+            services.AddSingleton<SubletRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
