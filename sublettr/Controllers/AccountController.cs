@@ -36,13 +36,19 @@ namespace sublettr.Controllers
 		[HttpGet("full/{id}")]
         public FullAccountModel GetFull(int id)
 		{
-            return new FullAccountModel(1, "john@purdue.edu", "pa$$w0rd", "John Purdue", 22, "Male", "Computer Science", "3", false);
+            return _accountRepo.GetFullAccount(id);
 		}
 
         // POST api/account
         [HttpPost]
         public void Post([FromBody]AccountModel value)
         {
+            AccountModel am = Get(value.ID);
+
+            if (am == null)
+            {
+                _accountRepo.PostAccount(value);
+            }
         }
 
         // PUT api/account/5
@@ -55,6 +61,11 @@ namespace sublettr.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            AccountModel am = Get(id);
+            if (am != null)
+            {
+                _accountRepo.RemoveAccount(am);
+            }
         }
     }
 }

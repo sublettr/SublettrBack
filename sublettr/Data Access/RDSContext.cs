@@ -15,6 +15,7 @@ namespace sublettr.DataAccess
         public DbSet<SubletModel> Sublets { get; set; }
         public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<SubletDataEntity> SubletData { get; set; }
+        public DbSet<AccountDataEntity> AccountData { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
@@ -22,6 +23,7 @@ namespace sublettr.DataAccess
             modelbuilder.Entity<SubletModel>().ToTable("Sublets");
             modelbuilder.Entity<AccountModel>().ToTable("Accounts");
             modelbuilder.Entity<SubletDataEntity>().ToTable("SubletData");
+            modelbuilder.Entity<AccountDataEntity>().ToTable("AccountData");
         }
     }
 }
