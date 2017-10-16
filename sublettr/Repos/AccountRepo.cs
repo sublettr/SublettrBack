@@ -33,8 +33,8 @@ namespace sublettr.Repos
 
         internal void PostAccount(AccountModel model)
         {
-            _context.Accounts.AddAsync(model);
-            _context.SaveChangesAsync();
+            _context.Accounts.Add(model);
+            _context.SaveChanges();
         }
 
         internal void RemoveAccount(AccountModel am)
