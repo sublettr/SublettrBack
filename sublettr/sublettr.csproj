@@ -29,5 +29,6 @@
     <Compile Remove="Models\UserDataModel.cs" />
     <Compile Remove="Models\FullUserModel.cs" />
     <Compile Remove="Models\UserModel.cs" />
+    <Compile Remove="Models\FullAccountModel.cs" />
   </ItemGroup>
 </Project>

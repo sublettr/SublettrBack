@@ -32,22 +32,15 @@ namespace sublettr.Controllers
             return _accountRepo.GetAccount(id);
         }
 
-		// GET api/account/full/5
-		[HttpGet("full/{id}")]
-        public FullAccountModel GetFull(int id)
-		{
-            return _accountRepo.GetFullAccount(id);
-		}
-
         // POST api/account
         [HttpPost]
         public void Post([FromBody]AccountModel value)
         {
-            AccountModel am = Get(value.ID);
-
-            if (am == null)
+            if (Get(value.ID) == null)
             {
                 _accountRepo.PostAccount(value);
+            } else {
+                // Account already exists
             }
         }
 
@@ -55,6 +48,13 @@ namespace sublettr.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]AccountModel value)
         {
+            if (ModelState.IsValid)
+            {
+                _accountRepo.Update(id, value);
+            } else {
+                // model is invalid
+            }
+
         }
 
         // DELETE api/account/5
