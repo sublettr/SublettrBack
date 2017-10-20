@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using sublettr.DataAccess;
 using sublettr.Entities;
 using sublettr.Mappers;
@@ -45,8 +46,21 @@ namespace sublettr.Repos
 
         internal void Update(int id, AccountModel am)
         {
-            // doesn't work right now
-            _context.Update(am);
+            AccountModel oldAccount = GetAccount(id);
+            //foreach (PropertyInfo prop in typeof(AccountModel).GetProperties())
+            //{
+            //    Console.WriteLine(prop.GetValue(am, null));
+            //}
+            oldAccount.Username = am.Username;
+            oldAccount.Password = am.Password;
+            oldAccount.Name = am.Name;
+            oldAccount.Age = am.Age;
+            oldAccount.Sex = am.Sex;
+            oldAccount.Major = am.Major;
+            oldAccount.Grade = am.Grade;
+            oldAccount.IsSeller = am.IsSeller;
+
+            _context.Update(oldAccount);
             _context.SaveChanges();
         }
     }

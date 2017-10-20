@@ -36,11 +36,16 @@ namespace sublettr.Controllers
         [HttpPost]
         public void Post([FromBody]AccountModel value)
         {
-            if (Get(value.ID) == null)
+            if (!ModelState.IsValid)
             {
-                _accountRepo.PostAccount(value);
-            } else {
-                // Account already exists
+                Console.WriteLine("Model state is invalid");
+            }
+            else
+            {
+                if (Get(value.ID) == null)
+                {
+                    _accountRepo.PostAccount(value);
+                }
             }
         }
 
@@ -48,11 +53,13 @@ namespace sublettr.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]AccountModel value)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+            }
+            else
             {
                 _accountRepo.Update(id, value);
-            } else {
-                // model is invalid
             }
 
         }
