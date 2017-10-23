@@ -50,6 +50,7 @@ namespace sublettr
             options.UseMySQL(Helpers.GetRDSConnectionString()));
 
             services.AddSingleton<SubletRepo>();
+            services.AddSingleton<AccountRepo>();
             services.AddSingleton<SubletMapper>();
             services.AddSingleton<AccountMapper>();
         }

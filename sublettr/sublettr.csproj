@@ -25,4 +25,10 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.Caching.SqlConfig.Tools" Version="1.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\UserDataModel.cs" />
+    <Compile Remove="Models\FullUserModel.cs" />
+    <Compile Remove="Models\UserModel.cs" />
+    <Compile Remove="Models\FullAccountModel.cs" />
+  </ItemGroup>
 </Project>

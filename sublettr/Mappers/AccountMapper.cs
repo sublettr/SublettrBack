@@ -10,19 +10,19 @@ namespace sublettr.Mappers
     public class AccountMapper
     {
 
-        public FullAccountModel Map(UserModel model, UserDataEntity entity)
-        {
-            FullAccountModel fam = new FullAccountModel(model.ID)
-            {
-                Username = model.Username,
-                Age = entity.Age,
-                IsSeller = entity.Seller,
-                Major = entity.Major,
-                Sex = entity.Sex,
-                Year = entity.Year
-            };
+        //public FullAccountModel Map(AccountModel model, AccountDataEntity entity)
+        //{
+        //    FullAccountModel fam = new FullAccountModel(model.ID)
+        //    {
+        //        Username = model.Username,
+        //        Age = entity.Age,
+        //        IsSeller = entity.Seller,
+        //        Major = entity.Major,
+        //        Sex = entity.Sex,
+        //        Year = entity.Year
+        //    };
 
-            return fam;
-        }
+        //    return fam;
+        //}
     }
 }
