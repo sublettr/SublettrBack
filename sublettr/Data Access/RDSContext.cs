@@ -18,12 +18,12 @@ namespace sublettr.DataAccess
         public DbSet<AccountDataEntity> AccountData { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelbuilder.Entity<SubletModel>().ToTable("Sublets");
-            modelbuilder.Entity<AccountModel>().ToTable("Accounts");
-            modelbuilder.Entity<SubletDataEntity>().ToTable("SubletData");
-            modelbuilder.Entity<AccountDataEntity>().ToTable("AccountData");
+            modelBuilder.Entity<SubletModel>().ToTable("Sublets");
+            modelBuilder.Entity<AccountModel>().ToTable("Accounts");
+            modelBuilder.Entity<SubletDataEntity>().ToTable("SubletData");
+            modelBuilder.Entity<AccountDataEntity>().ToTable("AccountData");
         }
     }
 }
