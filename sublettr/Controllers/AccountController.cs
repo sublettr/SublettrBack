@@ -34,7 +34,7 @@ namespace sublettr.Controllers
 
         // POST api/account
         [HttpPost]
-        public void Post([FromBody]AccountModel value)
+        public AccountModel Post([FromBody]AccountModel value)
         {
             if (!ModelState.IsValid)
             {
@@ -44,9 +44,10 @@ namespace sublettr.Controllers
             {
                 if (Get(value.ID) == null)
                 {
-                    _accountRepo.PostAccount(value);
+                   return _accountRepo.PostAccount(value);
                 }
             }
+	    return null;
         }
 
         // PUT api/account/5

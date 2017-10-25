@@ -32,10 +32,11 @@ namespace sublettr.Repos
             return _context.Accounts.ToList();
         }
 
-        internal void PostAccount(AccountModel model)
+        internal AccountModel PostAccount(AccountModel model)
         {
             _context.Accounts.Add(model);
             _context.SaveChanges();
+	    return model;
         }
 
         internal void RemoveAccount(AccountModel am)
