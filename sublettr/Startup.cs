@@ -48,10 +48,10 @@ namespace sublettr
             });
 
             services.AddDbContext<RDSContext>(options =>
-            options.UseMySQL(Helpers.GetRDSConnectionString()));
+            options.UseMySql(Helpers.GetRDSConnectionString()));
 
-            services.AddSingleton<SubletRepo>();
-            services.AddSingleton<AccountRepo>();
+            services.AddScoped<SubletRepo>();
+            services.AddScoped<AccountRepo>();
             services.AddSingleton<SubletMapper>();
             services.AddSingleton<AccountMapper>();
         }
