@@ -14,6 +14,7 @@ namespace sublettr.Entities
         public string Description { get; set; }
         public int Roommates { get; set; }
         public bool isFurnished { get; set; }
+        public DateTime OpenHouse { get; set; }
 
     }
 }

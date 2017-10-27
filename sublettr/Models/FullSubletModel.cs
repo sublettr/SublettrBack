@@ -10,6 +10,7 @@ namespace sublettr.Models
 		public string Description { get; set; }
 		public int Roommates { get; set; }
 		public bool IsFurnished { get; set; }
+        public DateTime OpenHouse { get; set; }
 
         public FullSubletModel(int id, int userId, string address, string description, int roommates, bool isFurnished) : this(id, userId, address)
         {

@@ -87,6 +87,7 @@ namespace sublettr.Repos
                 oldSde.Roommates = sde.Roommates;
                 oldSde.isFurnished = sde.isFurnished;
                 oldSde.Description = sde.Description;
+                oldSde.OpenHouse = sde.OpenHouse;
 
                 _context.SubletData.Update(oldSde);
                 _context.SaveChanges();
