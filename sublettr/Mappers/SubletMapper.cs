@@ -25,7 +25,6 @@ namespace sublettr.Mappers
             SubletDataEntity sde = new SubletDataEntity();
             sde.Description = model.Description;
             sde.isFurnished = model.IsFurnished;
-            sde.SubletID = model.id;
             sde.Roommates = model.Roommates;
             sde.UserID = model.UserId;
             return sde;

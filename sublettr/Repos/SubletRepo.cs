@@ -1,4 +1,5 @@
-﻿using sublettr.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using sublettr.DataAccess;
 using sublettr.Entities;
 using sublettr.Mappers;
 using sublettr.Models;
@@ -41,19 +42,25 @@ namespace sublettr.Repos
             return fsm;
         }
 
-        public Boolean createSublet(FullSubletModel fsm)
+        public int? createSublet(FullSubletModel fsm)
         {
             try
             {
                 SubletDataEntity sde = _mapper.Map(fsm);
                 SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
-                _context.Sublets.Add(sm);
-                _context.SubletData.Add(sde);
 
-                return true;
-            } catch(Exception e)
+                var newSub = _context.Sublets.Add(sm);
+                _context.SaveChanges();
+
+                sde.SubletID = newSub.Entity.ID;
+                _context.SubletData.Add(sde);
+                _context.SaveChanges();
+
+                return newSub.Entity.ID;
+                
+            } catch(DbUpdateException e)
             {
-                return false;
+                throw new DbUpdateException("error", e);
             }
         }
     }

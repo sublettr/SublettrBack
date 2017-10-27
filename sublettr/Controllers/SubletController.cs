@@ -41,15 +41,20 @@ namespace sublettr.Controllers
 
         // POST api/sublet/full
         [HttpPost("full")]
-        public void PostFull([FromBody] FullSubletModel value)
+        public int? PostFull([FromBody] FullSubletModel value)
         {
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("Model state is invalid");
+                return -1;
             }
             else
             {
-                //_subletRepo.createSublet(value);
+                if (Get(value.id) == null)
+                {
+                    return _subletRepo.createSublet(value);
+                }
+                else return -1;
             }
         }
 
