@@ -40,5 +40,21 @@ namespace sublettr.Repos
             FullSubletModel fsm = _mapper.Map(sm, sde);
             return fsm;
         }
+
+        public Boolean createSublet(FullSubletModel fsm)
+        {
+            try
+            {
+                SubletDataEntity sde = _mapper.Map(fsm);
+                SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
+                _context.Sublets.Add(sm);
+                _context.SubletData.Add(sde);
+
+                return true;
+            } catch(Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

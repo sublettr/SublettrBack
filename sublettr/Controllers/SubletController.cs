@@ -36,19 +36,28 @@ namespace sublettr.Controllers
         [HttpGet("full/{id}")]
         public FullSubletModel GetFull(int id)
         {
-            return new FullSubletModel(1, 1, "test Address");
+            return _subletRepo.GetFullSublet(id);
         }
 
         // POST api/sublet/full
         [HttpPost("full")]
-        public void PostFull([FromBody]FullSubletModel value)
+        public void PostFull([FromBody] FullSubletModel value)
         {
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+            }
+            else
+            {
+                //_subletRepo.createSublet(value);
+            }
         }
 
         // PUT api/sublet/full/5
         [HttpPut("full/{id}")]
         public void Put(int id, [FromBody]FullSubletModel value)
         {
+            _subletRepo.createSublet(value);
         }
 
         // DELETE api/sublet/5
