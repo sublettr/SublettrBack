@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using sublettr.Models;
 
 namespace sublettr.DataAccess
 {
-  public class IdentityContext : IdentityDbContext<IdentityUser>
+  public class IdentityContext : IdentityDbContext<ApplicationUser>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options)
                 : base(options)
         {
-            Database.EnsureCreated();
         }
     }
 }

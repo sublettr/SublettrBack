@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using sublettr.Repos;
 using sublettr.Mappers;
 using Microsoft.AspNetCore.Identity;
+using sublettr.Models;
 
 namespace sublettr
 {
@@ -52,7 +53,7 @@ namespace sublettr
             services.AddEntityFrameworkMySql().AddDbContext<IdentityContext>(options => options.UseMySql(Helpers.GetRDSConnectionString()));
 
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>();
 
             services.AddScoped<SubletRepo>();

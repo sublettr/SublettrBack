@@ -17,13 +17,13 @@ namespace sublettr.Controllers
     public class AccountController : Controller
     {
         private readonly AccountRepo _accountRepo;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JWTSettings _options;
 
         public AccountController(AccountRepo ar, 
-                                 UserManager<IdentityUser> userManager,
-                                 SignInManager<IdentityUser> signInManager,
+                                 UserManager<ApplicationUser> userManager,
+                                 SignInManager<ApplicationUser> signInManager,
                                  IOptions<JWTSettings> optionsAccessor)
 		{
             _accountRepo = ar;
@@ -48,28 +48,48 @@ namespace sublettr.Controllers
 
         // POST api/account
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] AccountModel value)
+        public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
-                    UserName = value.Username,
-                    Email = value.Username
+                    UserName = Credentials.Email,
+                    Email = Credentials.Email
                 };
-                Console.WriteLine(value.ToString());
+                Console.WriteLine(Credentials.ToString());
                 var result = await _userManager.CreateAsync(user, 
-                                                            value.Password);
+                                                            Credentials.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
                     {
-                        { "access_token", GetAccessToken(value.Username) },
+                        { "access_token", GetAccessToken(Credentials.Email) },
                         { "id_token", GetIdToken(user) }
                     });
                 }
                 return Errors(result);
+            }
+            return Error("Unexpected error");
+        }
+
+        [HttpPost("sign-in")]
+        public async Task<IActionResult> SignIn([FromBody] Credentials Credentials)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                    return new JsonResult(new Dictionary<string, object>
+                    {
+                        { "access_token", GetAccessToken(Credentials.Email) },
+                        { "id_token", GetIdToken(user) }
+                    });
+                }
+                return new JsonResult("Unable to sign in") { StatusCode = 401 };
             }
             return Error("Unexpected error");
         }
@@ -100,7 +120,7 @@ namespace sublettr.Controllers
             }
         }
 
-        private string GetIdToken(IdentityUser user)
+        private string GetIdToken(ApplicationUser user)
         {
             var payload = new Dictionary<string, object>
             {

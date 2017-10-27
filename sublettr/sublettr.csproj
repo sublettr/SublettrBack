@@ -31,5 +31,6 @@
     <Compile Remove="Models\FullUserModel.cs" />
     <Compile Remove="Models\UserModel.cs" />
     <Compile Remove="Models\FullAccountModel.cs" />
+    <Compile Remove="Controllers\Credentials.cs" />
   </ItemGroup>
 </Project>
