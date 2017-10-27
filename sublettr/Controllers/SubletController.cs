@@ -52,7 +52,7 @@ namespace sublettr.Controllers
             {
                 if (Get(value.id) == null)
                 {
-                    return _subletRepo.createSublet(value);
+                    return _subletRepo.CreateSublet(value);
                 }
                 else return -1;
             }
@@ -60,9 +60,9 @@ namespace sublettr.Controllers
 
         // PUT api/sublet/full/5
         [HttpPut("full/{id}")]
-        public void Put(int id, [FromBody]FullSubletModel value)
+        public int Put(int id, [FromBody]FullSubletModel value)
         {
-            _subletRepo.createSublet(value);
+            return _subletRepo.UpdateSublet(id, value);
         }
 
         // DELETE api/sublet/5
