@@ -13,6 +13,7 @@ using sublettr.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using sublettr.Repos;
 using sublettr.Mappers;
+using Microsoft.AspNetCore.Identity;
 
 namespace sublettr
 {
@@ -47,8 +48,12 @@ namespace sublettr
                 });
             });
 
-            services.AddDbContext<RDSContext>(options =>
-            options.UseMySql(Helpers.GetRDSConnectionString()));
+            services.AddDbContext<RDSContext>(options => options.UseMySql(Helpers.GetRDSConnectionString()));
+            services.AddEntityFrameworkMySql().AddDbContext<IdentityContext>(options => options.UseMySql(Helpers.GetRDSConnectionString()));
+
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>();
 
             services.AddScoped<SubletRepo>();
             services.AddScoped<AccountRepo>();

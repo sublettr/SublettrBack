@@ -8,7 +8,6 @@ using JWT.Serializers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using sublettr.DataAccess;
 using sublettr.Models;
 using sublettr.Repos;
 
@@ -58,6 +57,7 @@ namespace sublettr.Controllers
                     UserName = value.Username,
                     Email = value.Username
                 };
+                Console.WriteLine(value.ToString());
                 var result = await _userManager.CreateAsync(user, 
                                                             value.Password);
                 if (result.Succeeded)
