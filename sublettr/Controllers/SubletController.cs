@@ -50,11 +50,7 @@ namespace sublettr.Controllers
             }
             else
             {
-                if (Get(value.id) == null)
-                {
                     return _subletRepo.CreateSublet(value);
-                }
-                else return -1;
             }
         }
 
