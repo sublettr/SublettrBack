@@ -1,4 +1,5 @@
-﻿using sublettr.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using sublettr.DataAccess;
 using sublettr.Entities;
 using sublettr.Mappers;
 using sublettr.Models;
@@ -39,6 +40,64 @@ namespace sublettr.Repos
             SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.UserID == sm.UserID).FirstOrDefault();
             FullSubletModel fsm = _mapper.Map(sm, sde);
             return fsm;
+        }
+
+        public int CreateSublet(FullSubletModel fsm)
+        {
+            try
+            {
+                SubletDataEntity sde = _mapper.Map(fsm);
+                SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
+
+                var newSub = _context.Sublets.Add(sm);
+                _context.SaveChanges();
+
+                sde.SubletID = newSub.Entity.ID;
+                _context.SubletData.Add(sde);
+                _context.SaveChanges();
+
+                return newSub.Entity.ID;
+                
+            } catch(DbUpdateException e)
+            {
+                throw new DbUpdateException("error", e);
+            }
+        }
+
+        public int UpdateSublet(int id, FullSubletModel fsm)
+        {
+            try
+            {
+                
+                SubletDataEntity sde = _mapper.Map(fsm);
+                SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
+
+                SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
+                oldSm.ID = id;
+                oldSm.Address = sm.Address;
+                oldSm.Description = sm.Description;
+                oldSm.UserID = sm.UserID;
+
+                _context.Sublets.Update(oldSm);
+                _context.SaveChanges();
+
+                SubletDataEntity oldSde = _context.SubletData.Where(sd => sd.SubletID == id).FirstOrDefault();
+                oldSde.SubletID = id;
+                oldSde.UserID = sde.UserID;
+                oldSde.Roommates = sde.Roommates;
+                oldSde.isFurnished = sde.isFurnished;
+                oldSde.Description = sde.Description;
+                oldSde.OpenHouse = sde.OpenHouse;
+
+                _context.SubletData.Update(oldSde);
+                _context.SaveChanges();
+
+                return id;
+
+            } catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("error", e);
+            }
         }
     }
 }
