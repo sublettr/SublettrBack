@@ -12,48 +12,40 @@ namespace sublettr.Repos
     public class AccountRepo
     {
 
-        private readonly RDSContext _context;
+        private readonly IdentityContext _context;
         private readonly AccountMapper _mapper;
 
-        public AccountRepo(RDSContext context, AccountMapper mapper)
+        public AccountRepo(IdentityContext context, AccountMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        internal AccountModel GetAccount(int id)
+        internal ApplicationUser GetAccount(string email)
         {
-            AccountModel ar = _context.Accounts.Where(a => a.ID == id).FirstOrDefault();
+            ApplicationUser ar = _context.AppUser.Where(a => a.Email.Equals(email)).FirstOrDefault();
             return ar;
         }
 
-        internal IList<AccountModel> GetAccounts()
+        internal IList<ApplicationUser> GetAccounts()
         {
-            return _context.Accounts.ToList();
+            return _context.AppUser.ToList();
         }
 
-        internal AccountModel PostAccount(AccountModel model)
+        internal void RemoveAccount(ApplicationUser am)
         {
-            _context.Accounts.Add(model);
-            _context.SaveChanges();
-	    return model;
-        }
-
-        internal void RemoveAccount(AccountModel am)
-        {
-            _context.Accounts.Remove(am);
+            _context.AppUser.Remove(am);
             _context.SaveChanges();
         }
 
-        internal void Update(int id, AccountModel am)
+        internal void Update(string email, ApplicationUser am)
         {
-            AccountModel oldAccount = GetAccount(id);
+            ApplicationUser oldAccount = GetAccount(email);
             //foreach (PropertyInfo prop in typeof(AccountModel).GetProperties())
             //{
             //    Console.WriteLine(prop.GetValue(am, null));
             //}
-            oldAccount.Username = am.Username;
-            oldAccount.Password = am.Password;
+            oldAccount.Email = am.Email;
             oldAccount.Name = am.Name;
             oldAccount.Age = am.Age;
             oldAccount.Sex = am.Sex;

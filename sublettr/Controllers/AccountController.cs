@@ -34,20 +34,20 @@ namespace sublettr.Controllers
 
         // GET: api/account
         [HttpGet]
-        public IEnumerable<AccountModel> Get()
+        public IEnumerable<ApplicationUser> Get()
         {
             return _accountRepo.GetAccounts();
         }
 
-        // GET api/account/5
-        [HttpGet("{id}")]
-        public AccountModel Get(int id)
+        // GET api/account/jnewlin@purdue.edu
+        [HttpGet("{email}")]
+        public ApplicationUser Get(string email)
         {
-            return _accountRepo.GetAccount(id);
+            return _accountRepo.GetAccount(email);
         }
 
         // POST api/account
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {
             if (ModelState.IsValid)
@@ -95,8 +95,8 @@ namespace sublettr.Controllers
         }
 
         // PUT api/account/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]AccountModel value)
+        [HttpPut("{email}")]
+        public void Put(string email, [FromBody]ApplicationUser value)
         {
             if (!ModelState.IsValid)
             {
@@ -104,16 +104,16 @@ namespace sublettr.Controllers
             }
             else
             {
-                _accountRepo.Update(id, value);
+                _accountRepo.Update(email, value);
             }
 
         }
 
         // DELETE api/account/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{email}")]
+        public void Delete(string email)
         {
-            AccountModel am = Get(id);
+            ApplicationUser am = Get(email);
             if (am != null)
             {
                 _accountRepo.RemoveAccount(am);

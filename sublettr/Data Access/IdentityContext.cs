@@ -10,5 +10,13 @@ namespace sublettr.DataAccess
                 : base(options)
         {
         }
+        public DbSet<ApplicationUser> AppUser { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
+        }
     }
 }
