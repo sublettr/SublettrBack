@@ -17,7 +17,7 @@ namespace sublettr.Mappers
             fsm.IsFurnished = entity.isFurnished;
             fsm.Roommates = entity.Roommates;
             fsm.OpenHouse = entity.OpenHouse;
-
+            fsm.ImageUrls = entity.ImageUrls;
             return fsm;
         }
 
@@ -29,6 +29,7 @@ namespace sublettr.Mappers
             sde.Roommates = model.Roommates;
             sde.UserID = model.UserId;
             sde.OpenHouse = model.OpenHouse;
+            sde.ImageUrls = model.ImageUrls;
             return sde;
         }
     }
