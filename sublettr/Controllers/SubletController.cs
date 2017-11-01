@@ -50,11 +50,7 @@ namespace sublettr.Controllers
             }
             else
             {
-                if (Get(value.id) == null)
-                {
                     return _subletRepo.CreateSublet(value);
-                }
-                else return -1;
             }
         }
 
@@ -62,7 +58,15 @@ namespace sublettr.Controllers
         [HttpPut("full/{id}")]
         public int Put(int id, [FromBody]FullSubletModel value)
         {
-            return _subletRepo.UpdateSublet(id, value);
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+                return -1;
+            }
+            else
+            {
+                return _subletRepo.UpdateSublet(id, value);
+            }
         }
 
         // DELETE api/sublet/5
