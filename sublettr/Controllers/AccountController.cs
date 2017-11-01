@@ -43,8 +43,7 @@ namespace sublettr.Controllers
         [HttpGet("{email}")]
         public ApplicationUser Get(string email)
         {
-            var test = _accountRepo.GetAccount(email);
-            return test;
+            return _accountRepo.GetAccount(email);
         }
 
         // POST api/account
@@ -118,7 +117,10 @@ namespace sublettr.Controllers
         {
             if (ModelState.IsValid)
             {
-                _accountRepo.Update(email, value);
+                if (_accountRepo.Update(email, value) == 0)
+                {
+                    return Error("Account does not exist.");
+                }
 
                 return new JsonResult(new Dictionary<string, string>
                 {

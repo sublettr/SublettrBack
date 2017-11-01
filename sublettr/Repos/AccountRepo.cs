@@ -46,9 +46,13 @@ namespace sublettr.Repos
             _context.SaveChanges();
         }
 
-        internal void Update(string email, ApplicationUser am)
+        internal int Update(string email, ApplicationUser am)
         {
             ApplicationUser oldAccount = GetAccount(email);
+            if (oldAccount == null)
+            {
+                return 0;
+            }
             if (am.Email != null)
             {
                 oldAccount.Email = am.Email;
@@ -81,6 +85,7 @@ namespace sublettr.Repos
 
             _context.Update(oldAccount);
             _context.SaveChanges();
+            return 1;
         }
     }
 }
