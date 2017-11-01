@@ -4,28 +4,31 @@ namespace sublettr.Models
     public class FullSubletModel
     {
 		
-		public int userId { get; set; }
-		public int id { get; set; }
-        public string address { get; set; }
-		public string description { get; set; }
-		public int roommates { get; set; }
-		public bool isFurnished { get; set; }
-        
-        public FullSubletModel(int userId, int id, string address, string description, int roommates, bool isFurnished)
+        public int id { get; set; }
+		public int UserId { get; set; }
+        public string Address { get; set; }
+		public string Description { get; set; }
+		public int Roommates { get; set; }
+		public bool IsFurnished { get; set; }
+        public DateTime? OpenHouse { get; set; }
+        public string[] ImageUrls { get; set; }
+
+        public FullSubletModel(int id, int userId, string address, string description, int roommates, bool isFurnished) : this(id, userId, address)
         {
-            this.userId = userId;
-            this.id = id;
-            this.address = address;
-            this.description = description;
-            this.roommates = roommates;
-            this.isFurnished = isFurnished;
+            Description = description;
+            Roommates = roommates;
+            IsFurnished = isFurnished;
         }
 
-        public FullSubletModel(int userId, int id, string address)
+        public FullSubletModel(int id, int userId, string address)
         {
-            this.userId = userId;
             this.id = id;
-            this.address = address;
+            this.UserId = userId;
+            this.Address = address;
+        }
+
+        public FullSubletModel()
+        {
         }
     }
 }

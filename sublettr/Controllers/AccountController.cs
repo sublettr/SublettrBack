@@ -3,52 +3,77 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using sublettr.DataAccess;
 using sublettr.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using sublettr.Repos;
 
 namespace sublettr.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
+        private readonly AccountRepo _accountRepo;
+        public AccountController(AccountRepo ar)
+		{
+            _accountRepo = ar;
+		}
+
         // GET: api/account
         [HttpGet]
-        public IEnumerable<UserModel> Get()
+        public IEnumerable<AccountModel> Get()
         {
-            return new UserModel[] {  };
+            return _accountRepo.GetAccounts();
         }
 
         // GET api/account/5
         [HttpGet("{id}")]
-        public UserModel Get(int id)
+        public AccountModel Get(int id)
         {
-            return new UserModel(1, "myUserName");
+            return _accountRepo.GetAccount(id);
         }
-
-		// GET api/account/full/5
-		[HttpGet("full/{id}")]
-		public UserModel GetFull(int id)
-		{
-			return new UserModel(1, "myUserName");
-		}
 
         // POST api/account
         [HttpPost]
-        public void Post([FromBody]UserModel value)
+        public AccountModel Post([FromBody]AccountModel value)
         {
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+            }
+            else
+            {
+                if (Get(value.ID) == null)
+                {
+                   return _accountRepo.PostAccount(value);
+                }
+            }
+	    return null;
         }
 
         // PUT api/account/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]UserModel value)
+        public void Put(int id, [FromBody]AccountModel value)
         {
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+            }
+            else
+            {
+                _accountRepo.Update(id, value);
+            }
+
         }
 
         // DELETE api/account/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            AccountModel am = Get(id);
+            if (am != null)
+            {
+                _accountRepo.RemoveAccount(am);
+            }
         }
     }
 }
