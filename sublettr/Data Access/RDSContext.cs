@@ -28,6 +28,11 @@ namespace sublettr.DataAccess
             modelBuilder.Entity<AccountDataEntity>().ToTable("AccountData");
             modelBuilder.Entity<TagIndexEntity>().ToTable("TagIndex");
             modelBuilder.Entity<TagEntity>().ToTable("Tags");
+
+        // Define composite key.
+        base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TagEntity>()
+            .HasKey(t => new { t.tagID, t.subletID });
         }
     }
 }

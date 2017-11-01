@@ -58,6 +58,7 @@ namespace sublettr.Repos
                 _context.SaveChanges();
 
                 sde.SubletID = newSub.Entity.ID;
+                fsm.id = newSub.Entity.ID;
                 _context.SubletData.Add(sde);
                 _context.SaveChanges();
 
@@ -99,6 +100,9 @@ namespace sublettr.Repos
                 _context.SubletData.Update(oldSde);
                 _context.SaveChanges();
 
+
+                UpdateTags(fsm);
+
                 return id;
 
             } catch (DbUpdateException e)
@@ -111,11 +115,20 @@ namespace sublettr.Repos
         {
             try
             {
-                // remove all tag associations
-                TagEntity tagToDelete = new TagEntity { subletID = fsm.id };
-                _context.Tags.Attach(tagToDelete);
-                _context.Tags.Remove(tagToDelete);
-                _context.SaveChanges();
+                if (_context.Tags.Any(t => t.subletID == fsm.id))
+                {
+                    var collection = _context.Tags.Where(t => t.subletID == fsm.id).ToArray();
+                    // remove all tag associations
+
+                    _context.Tags.RemoveRange(collection);
+
+                    /*
+                    TagEntity tagToDelete = new TagEntity { subletID = fsm.id };
+                    _context.Tags.Attach(tagToDelete);
+                    _context.Tags.Remove(tagToDelete);
+                    */
+                    _context.SaveChanges();
+                }
 
                 foreach (string s in fsm.Tags)
                 {
