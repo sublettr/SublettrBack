@@ -45,7 +45,7 @@ namespace sublettr.DataAccess
 
         private static bool IsSeeded(RDSContext context)
         {
-            return context.Accounts.Any() || context.Sublets.Any();
+            return context.Sublets.Any();
         }
     }
 }

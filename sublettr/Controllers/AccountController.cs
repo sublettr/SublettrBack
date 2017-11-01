@@ -43,13 +43,15 @@ namespace sublettr.Controllers
         [HttpGet("{email}")]
         public ApplicationUser Get(string email)
         {
-            return _accountRepo.GetAccount(email);
+            var test = _accountRepo.GetAccount(email);
+            return test;
         }
 
         // POST api/account
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials Credentials)
         {
+            var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.ErrorMessage));
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -57,7 +59,6 @@ namespace sublettr.Controllers
                     UserName = Credentials.Email,
                     Email = Credentials.Email
                 };
-                Console.WriteLine(Credentials.ToString());
                 var result = await _userManager.CreateAsync(user, 
                                                             Credentials.Password);
                 if (result.Succeeded)
@@ -71,12 +72,21 @@ namespace sublettr.Controllers
                 }
                 return Errors(result);
             }
-            return Error("Unexpected error");
+            var errorList = new List<IdentityError>();
+            if (errors.Any())
+            {
+                foreach (var description in errors)
+                {
+                    errorList.Add(new IdentityError { Code = "400", Description = description });
+                }
+            }
+            return Errors(IdentityResult.Failed(errorList.ToArray()));
         }
 
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] Credentials Credentials)
         {
+            var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.ErrorMessage));
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
@@ -91,33 +101,53 @@ namespace sublettr.Controllers
                 }
                 return new JsonResult("Unable to sign in") { StatusCode = 401 };
             }
-            return Error("Unexpected error");
+            var errorList = new List<IdentityError>();
+            if (errors.Any())
+            {
+                foreach (var description in errors)
+                {
+                    errorList.Add(new IdentityError { Code = "400", Description = description });
+                }
+            }
+            return Errors(IdentityResult.Failed(errorList.ToArray()));
         }
 
-        // PUT api/account/5
+        // PUT api/account/jnewlin
         [HttpPut("{email}")]
-        public void Put(string email, [FromBody]ApplicationUser value)
+        public IActionResult Put(string email, [FromBody]ApplicationUser value)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Console.WriteLine("Model state is invalid");
+                _accountRepo.Update(email, value);
+
+                return new JsonResult(new Dictionary<string, string>
+                {
+                    { "Success", "True" }
+                });
+
             }
             else
             {
-                _accountRepo.Update(email, value);
+                return Error("Model is not valid.");
             }
 
         }
 
-        // DELETE api/account/5
+        // DELETE api/account/jnewlin
         [HttpDelete("{email}")]
-        public void Delete(string email)
+        public IActionResult Delete(string email)
         {
             ApplicationUser am = Get(email);
             if (am != null)
             {
                 _accountRepo.RemoveAccount(am);
+                return new JsonResult(new Dictionary<string, string>
+                    {
+                        { "username", email },
+                        {  "description", "Deleted sucessfully" }
+                    });
             }
+            return Error("User does not exist");
         }
 
         private string GetIdToken(ApplicationUser user)

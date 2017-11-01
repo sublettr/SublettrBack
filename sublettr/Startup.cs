@@ -59,7 +59,7 @@ namespace sublettr
             services.AddScoped<SubletRepo>();
             services.AddScoped<AccountRepo>();
             services.AddSingleton<SubletMapper>();
-            services.AddSingleton<AccountMapper>();
+            services.AddSingleton<ApplicationUserMapper>();
 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
         }

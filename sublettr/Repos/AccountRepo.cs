@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,9 +14,9 @@ namespace sublettr.Repos
     {
 
         private readonly IdentityContext _context;
-        private readonly AccountMapper _mapper;
+        private readonly ApplicationUserMapper _mapper;
 
-        public AccountRepo(IdentityContext context, AccountMapper mapper)
+        public AccountRepo(IdentityContext context, ApplicationUserMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -23,8 +24,15 @@ namespace sublettr.Repos
 
         internal ApplicationUser GetAccount(string email)
         {
-            ApplicationUser ar = _context.AppUser.Where(a => a.Email.Equals(email)).FirstOrDefault();
-            return ar;
+            ApplicationUser au = _context.AppUser.Where(a => a.Email.Equals(email)).FirstOrDefault();
+            return au;
+        }
+
+        internal ApplicationUserDataEntity GetAccountMapped(string email)
+        {
+            ApplicationUser au = _context.AppUser.Where(a => a.Email.Equals(email)).FirstOrDefault();
+            ApplicationUserDataEntity aude = _mapper.Map(au);
+            return aude;
         }
 
         internal IList<ApplicationUser> GetAccounts()
@@ -41,17 +49,35 @@ namespace sublettr.Repos
         internal void Update(string email, ApplicationUser am)
         {
             ApplicationUser oldAccount = GetAccount(email);
-            //foreach (PropertyInfo prop in typeof(AccountModel).GetProperties())
-            //{
-            //    Console.WriteLine(prop.GetValue(am, null));
-            //}
-            oldAccount.Email = am.Email;
-            oldAccount.Name = am.Name;
-            oldAccount.Age = am.Age;
-            oldAccount.Sex = am.Sex;
-            oldAccount.Major = am.Major;
-            oldAccount.Grade = am.Grade;
+            if (am.Email != null)
+            {
+                oldAccount.Email = am.Email;
+            }
+            if (am.Name != null)
+            {
+                oldAccount.Name = am.Name;
+            }
+            // Fix age
+            if (am.Age != -1)
+            {
+                oldAccount.Age = am.Age;
+            }
+            if (am.Sex != null)
+            {
+                oldAccount.Sex = am.Sex;
+            }
+            if (am.Major != null)
+            {
+                oldAccount.Major = am.Major;
+            }
+            // Fix grade
+            if (am.Grade != -1)
+            {
+                oldAccount.Grade = am.Grade;
+            }
+            // Fix isseller
             oldAccount.IsSeller = am.IsSeller;
+
 
             _context.Update(oldAccount);
             _context.SaveChanges();
