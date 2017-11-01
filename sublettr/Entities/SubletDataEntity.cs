@@ -15,6 +15,6 @@ namespace sublettr.Entities
         public int Roommates { get; set; }
         public bool isFurnished { get; set; }
         public DateTime? OpenHouse { get; set; }
-        public string[] ImageUrls { get; set; }
+
     }
 }
