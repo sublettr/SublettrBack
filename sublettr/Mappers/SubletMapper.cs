@@ -12,9 +12,9 @@ namespace sublettr.Mappers
 
         public FullSubletModel Map(SubletModel model, SubletDataEntity entity, string[] tags)
         {
-            FullSubletModel fsm = new FullSubletModel(model.ID, model.UserID, model.Address);
+            FullSubletModel fsm = new FullSubletModel(model.ID, model.Email, model.Address);
             fsm.Description = entity.Description;
-            fsm.IsFurnished = entity.isFurnished;
+            fsm.IsFurnished = entity.IsFurnished;
             fsm.Roommates = entity.Roommates;
             fsm.OpenHouse = entity.OpenHouse;
             fsm.Tags = tags;
@@ -26,9 +26,9 @@ namespace sublettr.Mappers
         {
             SubletDataEntity sde = new SubletDataEntity();
             sde.Description = model.Description;
-            sde.isFurnished = model.IsFurnished;
+            sde.IsFurnished = model.IsFurnished;
             sde.Roommates = model.Roommates;
-            sde.UserID = model.UserId;
+            sde.Email = model.Email;
             sde.OpenHouse = model.OpenHouse;
             return sde;
         }

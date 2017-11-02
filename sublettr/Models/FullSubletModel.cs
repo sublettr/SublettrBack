@@ -4,8 +4,8 @@ namespace sublettr.Models
     public class FullSubletModel
     {
 		
-        public int id { get; set; }
-		public int UserId { get; set; }
+        public int ID { get; set; }
+		public string Email { get; set; }
         public string Address { get; set; }
 		public string Description { get; set; }
 		public int Roommates { get; set; }
@@ -13,7 +13,7 @@ namespace sublettr.Models
         public DateTime? OpenHouse { get; set; }
         public string[] Tags { get; set; }
 
-        public FullSubletModel(int id, int userId, string address, string description, int roommates, bool isFurnished, string[] tags) : this(id, userId, address)
+        public FullSubletModel(int id, string email, string address, string description, int roommates, bool isFurnished, string[] tags) : this(id, email, address)
         {
             Description = description;
             Roommates = roommates;
@@ -21,10 +21,10 @@ namespace sublettr.Models
             Tags = tags;
         }
 
-        public FullSubletModel(int id, int userId, string address)
+        public FullSubletModel(int id, string email, string address)
         {
-            this.id = id;
-            this.UserId = userId;
+            this.ID = id;
+            this.Email = email;
             this.Address = address;
         }
 

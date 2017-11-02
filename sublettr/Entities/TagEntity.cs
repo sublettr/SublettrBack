@@ -11,9 +11,9 @@ namespace sublettr.Entities
     public class TagEntity
     {
         [ForeignKey("TagIndex")]
-        public int tagID { get; set; }
+        public int TagID { get; set; }
         [ForeignKey("Sublets")]
-        public int subletID { get; set; }
+        public int SubletID { get; set; }
     }
 
     

@@ -10,7 +10,7 @@ namespace sublettr.Models
     {
         [Key]
         public int ID { get; set; }
-		public int UserID { get; set; }
+		public string Email { get; set; }
 		public string Address { get; set; }
 		public string Description { get; set; }
 
@@ -18,16 +18,16 @@ namespace sublettr.Models
         {
         }
 
-        public SubletModel(int userId, string address)
+        public SubletModel(string email, string address)
         {
-            this.UserID = userId;
+            this.Email = email;
             this.Address = address;
             this.Description = "New Sublet";
         }
 
-        public SubletModel(int userId, string address, string desc)
+        public SubletModel(string email, string address, string desc)
         {
-            this.UserID = userId;
+            this.Email = email;
             this.Address = address;
             this.Description = desc;
         }
