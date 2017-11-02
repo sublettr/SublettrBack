@@ -37,11 +37,11 @@ namespace sublettr.Repos
         public FullSubletModel GetFullSublet(int id)
         {
             SubletModel sm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
-            SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.UserID == sm.UserID).FirstOrDefault();
+            SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.Email.Equals(sm.Email)).FirstOrDefault();
             List<string> tags = (from t in _context.Tags
-                                          join ti in _context.TagIndex on t.tagID equals ti.ID into t_ti
+                                          join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
                                           from s in t_ti.DefaultIfEmpty()
-                                          where t.subletID == id
+                                          where t.SubletID == id
                                           select s.Tag ).ToList();
             FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray());
             return fsm;
@@ -52,13 +52,13 @@ namespace sublettr.Repos
             try
             {
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description);
 
                 var newSub = _context.Sublets.Add(sm);
                 _context.SaveChanges();
 
                 sde.SubletID = newSub.Entity.ID;
-                fsm.id = newSub.Entity.ID;
+                fsm.ID = newSub.Entity.ID;
                 _context.SubletData.Add(sde);
                 _context.SaveChanges();
 
@@ -78,22 +78,22 @@ namespace sublettr.Repos
             {
                 
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.UserId, fsm.Address, fsm.Description);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description);
 
                 SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
                 oldSm.ID = id;
                 oldSm.Address = sm.Address;
                 oldSm.Description = sm.Description;
-                oldSm.UserID = sm.UserID;
+                oldSm.Email = sm.Email;
 
                 _context.Sublets.Update(oldSm);
                 _context.SaveChanges();
 
                 SubletDataEntity oldSde = _context.SubletData.Where(sd => sd.SubletID == id).FirstOrDefault();
                 oldSde.SubletID = id;
-                oldSde.UserID = sde.UserID;
+                oldSde.Email = sde.Email;
                 oldSde.Roommates = sde.Roommates;
-                oldSde.isFurnished = sde.isFurnished;
+                oldSde.IsFurnished = sde.IsFurnished;
                 oldSde.Description = sde.Description;
                 oldSde.OpenHouse = sde.OpenHouse;
 
@@ -115,9 +115,9 @@ namespace sublettr.Repos
         {
             try
             {
-                if (_context.Tags.Any(t => t.subletID == fsm.id))
+                if (_context.Tags.Any(t => t.SubletID == fsm.ID))
                 {
-                    var collection = _context.Tags.Where(t => t.subletID == fsm.id).ToArray();
+                    var collection = _context.Tags.Where(t => t.SubletID == fsm.ID).ToArray();
                     // remove all tag associations
 
                     _context.Tags.RemoveRange(collection);
@@ -141,7 +141,7 @@ namespace sublettr.Repos
                     }
                     // add association
                     int tagToAddID = _context.TagIndex.Where(t => t.Tag == s).First().ID;
-                    TagEntity tagToAdd = new TagEntity { subletID = fsm.id, tagID = tagToAddID };
+                    TagEntity tagToAdd = new TagEntity { SubletID = fsm.ID, TagID = tagToAddID };
 
                     _context.Tags.Add(tagToAdd);
                     _context.SaveChanges();

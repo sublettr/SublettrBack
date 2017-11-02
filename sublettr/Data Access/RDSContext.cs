@@ -28,7 +28,7 @@ namespace sublettr.DataAccess
         // Define composite key.
         base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TagEntity>()
-            .HasKey(t => new { t.tagID, t.subletID });
+            .HasKey(t => new { t.TagID, t.SubletID });
         }
     }
 }
