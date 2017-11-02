@@ -119,14 +119,7 @@ namespace sublettr.Repos
                 {
                     var collection = _context.Tags.Where(t => t.SubletID == fsm.ID).ToArray();
                     // remove all tag associations
-
                     _context.Tags.RemoveRange(collection);
-
-                    /*
-                    TagEntity tagToDelete = new TagEntity { subletID = fsm.id };
-                    _context.Tags.Attach(tagToDelete);
-                    _context.Tags.Remove(tagToDelete);
-                    */
                     _context.SaveChanges();
                 }
 
@@ -149,6 +142,14 @@ namespace sublettr.Repos
             } catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
+            }
+        }
+
+        public void SaveSublet(int id, string email)
+        {
+            if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
+            {
+
             }
         }
     }
