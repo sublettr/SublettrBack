@@ -14,12 +14,21 @@ namespace sublettr.DataAccess
 
         public DbSet<SubletModel> Sublets { get; set; }
         public DbSet<SubletDataEntity> SubletData { get; set; }
+        public DbSet<TagIndexEntity> TagIndex { get; set; }
+        public DbSet<TagEntity> Tags { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SubletModel>().ToTable("Sublets");
             modelBuilder.Entity<SubletDataEntity>().ToTable("SubletData");
+            modelBuilder.Entity<TagIndexEntity>().ToTable("TagIndex");
+            modelBuilder.Entity<TagEntity>().ToTable("Tags");
+
+        // Define composite key.
+        base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TagEntity>()
+            .HasKey(t => new { t.tagID, t.subletID });
         }
     }
 }
