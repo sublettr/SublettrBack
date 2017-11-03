@@ -3,31 +3,36 @@ namespace sublettr.Models
 {
     public class FullAccountModel
     {
+        public int ID { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Sex { get; set; }
+        public string Major { get; set; }
+        public string Year { get; set; }
+        public bool IsSeller { get; set; }
+
 
         public FullAccountModel(int id)
         {
-            this.id = id;
-            this.isSeller = false;
+            this.ID = id;
+            this.IsSeller = false;
         }
 
-        public FullAccountModel(int id, string username, int age, string sex, string major, int year, bool isSeller)
+        public FullAccountModel(int id, string username, string password, string name, int age, string sex, string major, string year, bool isSeller)
         {
-            this.id = id;
-            this.username = username;
-            this.age = age;
-            this.sex = sex;
-            this.major = major;
-            this.year = year;
-            this.isSeller = isSeller;
+            this.ID = id;
+            this.Username = username;
+            this.Password = password;
+            this.Name = name;
+            this.Age = age;
+            this.Sex = sex;
+            this.Major = major;
+            this.Year = year;
+            this.IsSeller = isSeller;
         }
 
-        public int id { get; set; }
-        public string username { get; set; }
-        public int age { get; set; }
-        public string sex { get; set; }
-        public string major { get; set; }
-        public int year { get; set; }
-        public bool isSeller { get; set; }
     }
     
 }
