@@ -19,7 +19,7 @@ namespace sublettr.Mappers
                 Roommates = entity.Roommates,
                 OpenHouse = entity.OpenHouse,
                 Tags = tags,
-                ImageUrls = imageUrls;
+                ImageUrls = imageUrls
             };
 
             return fsm;
