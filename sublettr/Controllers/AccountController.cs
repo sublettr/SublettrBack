@@ -20,16 +20,19 @@ namespace sublettr.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JWTSettings _options;
+        private SubletRepo _subletRepo;
 
         public AccountController(AccountRepo ar, 
                                  UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IOptions<JWTSettings> optionsAccessor)
+                                 IOptions<JWTSettings> optionsAccessor,
+                                 SubletRepo sr)
 		{
             _accountRepo = ar;
             _userManager = userManager;
             _signInManager = signInManager;
             _options = optionsAccessor.Value;
+            _subletRepo = sr;
 		}
 
         // GET: api/account
@@ -217,5 +220,18 @@ namespace sublettr.Controllers
             TimeSpan diff = date.ToUniversalTime() - origin;
             return Math.Floor(diff.TotalSeconds);
         }
+
+        [HttpGet("saved/{email}")]
+        public SubletModel[] GetSavedSublets(string email)
+        {
+            return _subletRepo.GetSaved(email);
+        }
+
+        [HttpGet("posted/{email}")]
+        public SubletModel[] GetPostedSublets(string email)
+        {
+            return _subletRepo.GetPosted(email);
+        }
+
     }
 }

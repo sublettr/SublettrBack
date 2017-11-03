@@ -75,10 +75,16 @@ namespace sublettr.Controllers
         {
         }
 
-        [HttpPost("/save/{id}")]
-        public void Save(int id, [FromBody] string email)
+        [HttpPost("/save/{email}/{id}")]
+        public void Save(string email, int id)
         {
             _subletRepo.SaveSublet(id, email);
+        }
+
+        [HttpPost("/unsave/{email}/{id}")]
+        public void UnSave(string email, int id)
+        {
+            _subletRepo.UnSaveSublet(id, email);
         }
     }
 }

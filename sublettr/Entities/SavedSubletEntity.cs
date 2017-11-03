@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,14 +8,10 @@ namespace sublettr.Entities
 {
     public class SavedSubletEntity
     {
-        public string Email;
-        public int SubletID;
-
-        public SavedSubletEntity(string email, int subletID)
-        {
-            Email = email;
-            SubletID = subletID;
-        }
+        [ForeignKey("AspNetUser")]
+        public string Email { get; set; }
+        [ForeignKey("Sublets")]
+        public int SubletID { get; set; }
 
         public SavedSubletEntity()
         {
