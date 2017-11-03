@@ -18,6 +18,7 @@ namespace sublettr.DataAccess
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<SubletImageEntity> SubletImages { get; set; }
         public DbSet<SavedSubletEntity> SavedSublets { get; set; }
+        public DbSet<RoommateEntity> Roommates { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +30,7 @@ namespace sublettr.DataAccess
             modelBuilder.Entity<TagEntity>().ToTable("Tags");
             modelBuilder.Entity<SubletImageEntity>().ToTable("SubletImages");
             modelBuilder.Entity<SavedSubletEntity>().ToTable("SavedSublets");
+            modelBuilder.Entity<RoommateEntity>().ToTable("Roommates");
 
             // Define composite key.
             modelBuilder.Entity<TagEntity>()

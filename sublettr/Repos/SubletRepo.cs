@@ -47,7 +47,8 @@ namespace sublettr.Repos
            List<string> imageUrls = (from i in _context.SubletImages
                                       where i.SubletID == id
                                       select i.ImageUrl).ToList();
-            FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), imageUrls.ToArray());
+            RoommateEntity[] roommates = _context.Roommates.Where(r => r.SubletID == id).ToArray();
+            FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), imageUrls.ToArray(), roommates);
             return fsm;
         }
 
@@ -84,6 +85,7 @@ namespace sublettr.Repos
 
                 UpdateTags(fsm);
                 CreateImageUrls(fsm);
+                CreateRoommates(fsm);
                 return newSub.Entity.ID;
                 
             } catch(DbUpdateException e)
@@ -108,7 +110,23 @@ namespace sublettr.Repos
                 throw new DbUpdateException("error", e);
             }
         }
-      
+
+        public void CreateRoommates(FullSubletModel fsm)
+        {
+            try
+            {
+                foreach (RoommateEntity r in fsm.Roommates)
+                {
+                    _context.Roommates.Add(r);
+                    _context.SaveChanges();
+                }
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("error", e);
+            }
+        }
+
         public int UpdateSublet(int id, FullSubletModel fsm)
         {
             try
@@ -129,7 +147,6 @@ namespace sublettr.Repos
                 SubletDataEntity oldSde = _context.SubletData.Where(sd => sd.SubletID == id).FirstOrDefault();
                 oldSde.SubletID = id;
                 oldSde.Email = sde.Email;
-                oldSde.Roommates = sde.Roommates;
                 oldSde.IsFurnished = sde.IsFurnished;
                 oldSde.Description = sde.Description;
                 oldSde.OpenHouse = sde.OpenHouse;
@@ -140,6 +157,7 @@ namespace sublettr.Repos
 
                 UpdateTags(fsm);
                 UpdateImageUrls(fsm);
+                UpdateRoommates(fsm);
                 return id;
 
             } catch (DbUpdateException e)
@@ -196,6 +214,25 @@ namespace sublettr.Repos
 
                 CreateImageUrls(fsm);
             } catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("error", e);
+            }
+        }
+
+        public void UpdateRoommates(FullSubletModel fsm)
+        {
+            try
+            {
+                if (_context.Roommates.Any(i => i.SubletID == fsm.ID))
+                {
+                    var oldRoommates = _context.Roommates.Where(i => i.SubletID == fsm.ID).ToArray();
+                    _context.Roommates.RemoveRange(oldRoommates);
+                    _context.SaveChanges();
+                }
+
+                CreateRoommates(fsm);
+            }
+            catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
             }

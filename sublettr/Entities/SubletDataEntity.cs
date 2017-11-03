@@ -13,7 +13,6 @@ namespace sublettr.Entities
         public int SubletID { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
-        public int Roommates { get; set; }
         public bool IsFurnished { get; set; }
         public DateTime? OpenHouse { get; set; }
     }

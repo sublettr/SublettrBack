@@ -1,5 +1,6 @@
 
-﻿using System;
+using sublettr.Entities;
+using System;
 namespace sublettr.Models
 {
     public class FullSubletModel
@@ -9,14 +10,13 @@ namespace sublettr.Models
 		public string Email { get; set; }
         public string Address { get; set; }
 		public string Description { get; set; }
-		public int Roommates { get; set; }
 		public bool IsFurnished { get; set; }
         public DateTime? OpenHouse { get; set; }
         public string[] Tags { get; set; }
         public string[] ImageUrls { get; set; }
-        // roommate thing
+        public RoommateEntity[] Roommates { get; set; }
 
-        public FullSubletModel(int id, string email, string address, string description, int roommates, bool isFurnished, string[] tags, string[] imageUrls) : this(id, email, address)
+        public FullSubletModel(int id, string email, string address, string description, RoommateEntity[] roommates, bool isFurnished, string[] tags, string[] imageUrls) : this(id, email, address)
         {
             Description = description;
             Roommates = roommates;
