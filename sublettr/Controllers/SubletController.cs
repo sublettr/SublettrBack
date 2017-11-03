@@ -74,5 +74,11 @@ namespace sublettr.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpPost("/save/{id}")]
+        public void Save(int id, [FromBody] string email)
+        {
+            _subletRepo.SaveSublet(id, email);
+        }
     }
 }

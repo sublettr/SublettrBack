@@ -16,6 +16,7 @@ namespace sublettr.DataAccess
         public DbSet<SubletDataEntity> SubletData { get; set; }
         public DbSet<TagIndexEntity> TagIndex { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
+       // public DbSet<SavedSubletEntity> SavedSublets { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,11 +25,18 @@ namespace sublettr.DataAccess
             modelBuilder.Entity<SubletDataEntity>().ToTable("SubletData");
             modelBuilder.Entity<TagIndexEntity>().ToTable("TagIndex");
             modelBuilder.Entity<TagEntity>().ToTable("Tags");
+           // modelBuilder.Entity<SavedSubletEntity>().ToTable("SavedSublets");
 
-        // Define composite key.
-        base.OnModelCreating(modelBuilder);
+            // Define composite key.
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TagEntity>()
             .HasKey(t => new { t.TagID, t.SubletID });
+
+
+           /* base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SavedSubletEntity>()
+            .HasKey(ss => new { ss.Email, ss.SubletID });
+            */
         }
     }
 }
