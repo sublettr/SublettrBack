@@ -1,4 +1,4 @@
-﻿using sublettr.Entities;
+using sublettr.Entities;
 using sublettr.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace sublettr.Mappers
     public class SubletMapper
     {
 
-        public FullSubletModel Map(SubletModel model, SubletDataEntity entity, string[] tags)
+        public FullSubletModel Map(SubletModel model, SubletDataEntity entity, string[] tags, string[] imageUrls)
         {
             FullSubletModel fsm = new FullSubletModel(model.ID, model.Email, model.Address)
             {
@@ -18,7 +18,8 @@ namespace sublettr.Mappers
                 IsFurnished = entity.IsFurnished,
                 Roommates = entity.Roommates,
                 OpenHouse = entity.OpenHouse,
-                Tags = tags
+                Tags = tags,
+                ImageUrls = imageUrls;
             };
 
             return fsm;
