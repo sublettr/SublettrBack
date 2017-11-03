@@ -15,6 +15,8 @@ namespace sublettr.Models
         public int Grade { get; set; }
         [Display(Name = "-1")]
         public bool IsSeller { get; set; }
+        public SubletModel[] Saved { get; set; }
+        public SubletModel[] Posted { get; set; }
 
 
         public ApplicationUser()

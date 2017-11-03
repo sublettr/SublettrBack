@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using sublettr.DataAccess;
 using sublettr.Entities;
 using sublettr.Mappers;
@@ -38,16 +38,33 @@ namespace sublettr.Repos
         {
             SubletModel sm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
             SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.Email.Equals(sm.Email)).FirstOrDefault();
+
             List<string> tags = (from t in _context.Tags
                                           join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
                                           from s in t_ti.DefaultIfEmpty()
                                           where t.SubletID == id
                                           select s.Tag ).ToList();
-            List<string> imageUrls = (from i in _context.SubletImages
+           List<string> imageUrls = (from i in _context.SubletImages
                                       where i.SubletID == id
                                       select i.ImageUrl).ToList();
             FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), imageUrls.ToArray());
             return fsm;
+        }
+
+        public SubletModel[] GetSaved(string email)
+        {
+            List<SubletModel> saved = new List<SubletModel>();
+            List<int> ids = _context.SavedSublets.Where(ss => ss.Email.Equals(email)).Select(ss => ss.SubletID).ToList();
+            foreach(var id in ids)
+            {
+                saved.Add(GetSublet(id));
+            }
+            return saved.ToArray();
+        }
+
+        public SubletModel[] GetPosted(string email)
+        {
+            return _context.Sublets.Where(s => s.Email.Equals(email)).ToArray();
         }
 
         public int CreateSublet(FullSubletModel fsm)
@@ -91,7 +108,7 @@ namespace sublettr.Repos
                 throw new DbUpdateException("error", e);
             }
         }
-
+      
         public int UpdateSublet(int id, FullSubletModel fsm)
         {
             try
@@ -130,7 +147,7 @@ namespace sublettr.Repos
                 throw new DbUpdateException("error", e);
             }
         }
-       
+
         public void UpdateTags(FullSubletModel fsm)
         {
             try
@@ -164,7 +181,8 @@ namespace sublettr.Repos
                 throw new DbUpdateException("error", e);
             }
         }
-
+      
+      
         public void UpdateImageUrls(FullSubletModel fsm)
         {
             try
@@ -185,10 +203,22 @@ namespace sublettr.Repos
 
         public void SaveSublet(int id, string email)
         {
-           /* if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
+            if(!_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
             {
+                _context.SavedSublets.Add(new SavedSubletEntity() { Email = email, SubletID = id });
+                _context.SaveChanges();
+            }
+        }
 
-            }*/
+        public void UnSaveSublet(int id, string email)
+        {
+            if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
+            {
+                SavedSubletEntity toUnFav = new SavedSubletEntity() { Email = email, SubletID = id };
+                _context.SavedSublets.Attach(toUnFav);
+                _context.SavedSublets.Remove(toUnFav);
+                _context.SaveChanges();
+            }
         }
     }
 }
