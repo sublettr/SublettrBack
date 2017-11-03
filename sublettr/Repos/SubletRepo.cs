@@ -147,10 +147,10 @@ namespace sublettr.Repos
 
         public void SaveSublet(int id, string email)
         {
-            if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
+           /* if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
             {
 
-            }
+            }*/
         }
     }
 }
