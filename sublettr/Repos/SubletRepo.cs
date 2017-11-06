@@ -117,6 +117,7 @@ namespace sublettr.Repos
             {
                 foreach (RoommateEntity r in fsm.Roommates)
                 {
+                    r.SubletID = fsm.ID;
                     _context.Roommates.Add(r);
                     _context.SaveChanges();
                 }
@@ -131,15 +132,18 @@ namespace sublettr.Repos
         {
             try
             {
-                
+                FullSubletModel oldFsm = GetFullSublet(id);
+                fsm.Email = oldFsm.Email;
+                fsm.ID = oldFsm.ID;
+
+                _mapper.FillNulls(oldFsm, fsm);
+
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
                 SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description);
 
                 SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
-                oldSm.ID = id;
                 oldSm.Address = sm.Address;
                 oldSm.Description = sm.Description;
-                oldSm.Email = sm.Email;
 
                 _context.Sublets.Update(oldSm);
                 _context.SaveChanges();
