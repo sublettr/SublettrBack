@@ -3,6 +3,7 @@ using sublettr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace sublettr.Mappers
@@ -35,6 +36,20 @@ namespace sublettr.Mappers
                 OpenHouse = model.OpenHouse
             };
             return sde;
+        }
+
+        public void FillNulls(FullSubletModel oldFsm, FullSubletModel fsm)
+        {
+            foreach (var prop in fsm.GetType().GetProperties())
+            {
+                if (prop.CanRead)
+                {
+                    if(prop.GetValue(fsm) == null)
+                    {
+                        prop.SetValue(fsm, prop.GetValue(oldFsm));
+                    }
+                }
+            }
         }
     }
 }
