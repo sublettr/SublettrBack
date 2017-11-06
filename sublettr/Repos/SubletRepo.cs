@@ -117,6 +117,7 @@ namespace sublettr.Repos
             {
                 foreach (RoommateEntity r in fsm.Roommates)
                 {
+                    r.SubletID = fsm.ID;
                     _context.Roommates.Add(r);
                     _context.SaveChanges();
                 }
