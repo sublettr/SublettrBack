@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace sublettr.Repos
 {
@@ -256,10 +258,18 @@ namespace sublettr.Repos
             }
         }
 
-        public List<String> GetTags()
+        public List<JObject> GetTags()
         {
+            List<JObject> returnJson = new List<JObject>();
             var tags = _context.TagIndex.Select(t => t.Tag).Distinct().ToList();
-            return tags;
+            foreach (var t in tags)
+            {
+                dynamic jsonObject = new JObject();
+                jsonObject.Label = t;
+                jsonObject.Value = t;
+                returnJson.Add(jsonObject);
+            }
+            return returnJson;
         }
     }
 }

@@ -7,6 +7,7 @@ using sublettr.Models;
 using sublettr.DataAccess;
 using sublettr.Repos;
 using sublettr.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace sublettr.Controllers
 {
@@ -83,7 +84,7 @@ namespace sublettr.Controllers
         }
 
         [HttpGet("/tags")]
-        public List<String> GetTags()
+        public List<JObject> GetTags()
         {
             return _subletRepo.GetTags();
         }
