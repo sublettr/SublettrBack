@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using sublettr.Models;
 using sublettr.DataAccess;
 using sublettr.Repos;
+using sublettr.Entities;
 
 namespace sublettr.Controllers
 {
@@ -81,10 +82,10 @@ namespace sublettr.Controllers
             _subletRepo.SaveSublet(id, email);
         }
 
-        [HttpPost("/unsave/{email}/{id}")]
-        public void UnSave(string email, int id)
+        [HttpGet("/tags")]
+        public List<String> GetTags()
         {
-            _subletRepo.UnSaveSublet(id, email);
+            return _subletRepo.GetTags();
         }
     }
 }
