@@ -248,18 +248,18 @@ namespace sublettr.Repos
             {
                 _context.SavedSublets.Add(new SavedSubletEntity() { Email = email, SubletID = id });
                 _context.SaveChanges();
-            }
-        }
-
-        public void UnSaveSublet(int id, string email)
-        {
-            if(_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
-            {
+            } else {
                 SavedSubletEntity toUnFav = new SavedSubletEntity() { Email = email, SubletID = id };
                 _context.SavedSublets.Attach(toUnFav);
                 _context.SavedSublets.Remove(toUnFav);
                 _context.SaveChanges();
             }
+        }
+
+        public List<String> GetTags()
+        {
+            var tags = _context.TagIndex.Select(t => t.Tag).Distinct().ToList();
+            return tags;
         }
     }
 }
