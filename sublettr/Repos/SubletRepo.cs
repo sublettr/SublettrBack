@@ -224,8 +224,8 @@ namespace sublettr.Repos
             foreach (var t in tags)
             {
                 dynamic jsonObject = new JObject();
-                jsonObject.Label = t;
-                jsonObject.Value = t;
+                jsonObject.label = t;
+                jsonObject.value = t;
                 returnJson.Add(jsonObject);
             }
             return returnJson;
