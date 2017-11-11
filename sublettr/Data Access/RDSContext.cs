@@ -16,7 +16,6 @@ namespace sublettr.DataAccess
         public DbSet<SubletDataEntity> SubletData { get; set; }
         public DbSet<TagIndexEntity> TagIndex { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
-        public DbSet<SubletImageEntity> SubletImages { get; set; }
         public DbSet<SavedSubletEntity> SavedSublets { get; set; }
         public DbSet<RoommateEntity> Roommates { get; set; }
 
@@ -28,16 +27,12 @@ namespace sublettr.DataAccess
             modelBuilder.Entity<SubletDataEntity>().ToTable("SubletData");
             modelBuilder.Entity<TagIndexEntity>().ToTable("TagIndex");
             modelBuilder.Entity<TagEntity>().ToTable("Tags");
-            modelBuilder.Entity<SubletImageEntity>().ToTable("SubletImages");
             modelBuilder.Entity<SavedSubletEntity>().ToTable("SavedSublets");
             modelBuilder.Entity<RoommateEntity>().ToTable("Roommates");
 
             // Define composite key.
             modelBuilder.Entity<TagEntity>()
                 .HasKey(t => new { t.TagID, t.SubletID });
-
-            modelBuilder.Entity<SubletImageEntity>()
-                .HasKey(i => new { i.ImageUrl, i.SubletID });
                 
             modelBuilder.Entity<SavedSubletEntity>()
                 .HasKey(s => new { s.Email, s.SubletID });

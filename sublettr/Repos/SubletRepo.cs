@@ -21,7 +21,7 @@ namespace sublettr.Repos
         public SubletRepo(RDSContext context, SubletMapper mapper)
         {
             _context = context;
-            _mapper = mapper;
+            _mapper = mapper;      
         }
 
         public SubletModel GetSublet(int id)
@@ -46,11 +46,8 @@ namespace sublettr.Repos
                                           from s in t_ti.DefaultIfEmpty()
                                           where t.SubletID == id
                                           select s.Tag ).ToList();
-           List<string> imageUrls = (from i in _context.SubletImages
-                                      where i.SubletID == id
-                                      select i.ImageUrl).ToList();
             RoommateEntity[] roommates = _context.Roommates.Where(r => r.SubletID == id).ToArray();
-            FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), imageUrls.ToArray(), roommates);
+            FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), roommates);
             return fsm;
         }
 
@@ -75,8 +72,8 @@ namespace sublettr.Repos
             try
             {
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description);
-
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl);
+               
                 var newSub = _context.Sublets.Add(sm);
                 _context.SaveChanges();
 
@@ -86,28 +83,10 @@ namespace sublettr.Repos
                 _context.SaveChanges();
 
                 UpdateTags(fsm);
-                CreateImageUrls(fsm);
                 CreateRoommates(fsm);
                 return newSub.Entity.ID;
                 
             } catch(DbUpdateException e)
-            {
-                throw new DbUpdateException("error", e);
-            }
-        }
-
-        public void CreateImageUrls(FullSubletModel fsm)
-        {
-            try
-            {
-                foreach (string s in fsm.ImageUrls)
-                {
-                    SubletImageEntity newSubletImage = new SubletImageEntity { ImageUrl = s, SubletID = fsm.ID };
-                    _context.SubletImages.Add(newSubletImage);
-                    _context.SaveChanges();
-                }
-            }
-            catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
             }
@@ -162,7 +141,6 @@ namespace sublettr.Repos
 
 
                 UpdateTags(fsm);
-                UpdateImageUrls(fsm);
                 UpdateRoommates(fsm);
                 return id;
 
@@ -200,25 +178,6 @@ namespace sublettr.Repos
                     _context.Tags.Add(tagToAdd);
                     _context.SaveChanges();
                 }
-            } catch (DbUpdateException e)
-            {
-                throw new DbUpdateException("error", e);
-            }
-        }
-      
-      
-        public void UpdateImageUrls(FullSubletModel fsm)
-        {
-            try
-            {
-                if (_context.SubletImages.Any(i => i.SubletID == fsm.ID))
-                {
-                    var oldImageUrls = _context.SubletImages.Where(i => i.SubletID == fsm.ID).ToArray();
-                    _context.SubletImages.RemoveRange(oldImageUrls);
-                    _context.SaveChanges();
-                }
-
-                CreateImageUrls(fsm);
             } catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);

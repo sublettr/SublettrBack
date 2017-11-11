@@ -13,16 +13,16 @@ namespace sublettr.Models
 		public bool IsFurnished { get; set; }
         public DateTime? OpenHouse { get; set; }
         public string[] Tags { get; set; }
-        public string[] ImageUrls { get; set; }
         public RoommateEntity[] Roommates { get; set; }
+        public string ImageUrl { get; set; }
 
-        public FullSubletModel(int id, string email, string address, string description, RoommateEntity[] roommates, bool isFurnished, string[] tags, string[] imageUrls) : this(id, email, address)
+        public FullSubletModel(int id, string email, string address, string description, RoommateEntity[] roommates, bool isFurnished, string[] tags, string imageUrl) : this(id, email, address)
         {
             Description = description;
             Roommates = roommates;
             IsFurnished = isFurnished;
             Tags = tags;
-            ImageUrls = imageUrls;
+            ImageUrl = imageUrl;
         }
 
         public FullSubletModel(int id, string email, string address)
