@@ -13,7 +13,7 @@ namespace sublettr.Mappers
 
         public FullSubletModel Map(SubletModel model, SubletDataEntity entity, string[] tags, RoommateEntity[] roommates)
         {
-            FullSubletModel fsm = new FullSubletModel(model.ID, model.Email, model.Address)
+            FullSubletModel fsm = new FullSubletModel(model.ID, model.Email, model.Address, model.Price)
             {
                 Description = entity.Description,
                 IsFurnished = entity.IsFurnished,
