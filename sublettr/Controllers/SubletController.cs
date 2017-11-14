@@ -73,8 +73,9 @@ namespace sublettr.Controllers
 
         // DELETE api/sublet/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public JObject Delete(int id)
         {
+            return _subletRepo.DeleteSublet(id);
         }
 
         [HttpPost("/save/{email}/{id}")]

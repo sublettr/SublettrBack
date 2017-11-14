@@ -92,6 +92,37 @@ namespace sublettr.Repos
             }
         }
 
+        public JObject DeleteSublet(int id)
+        {
+            try
+            {
+                foreach (var t in _context.Tags.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Remove(t);
+                }
+                foreach (var s in _context.Sublets.Where(t => t.ID == id).ToList())
+                {
+                    _context.Remove(s);
+                }
+                foreach (var d in _context.SubletData.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Remove(d);
+                }
+                foreach (var s in _context.SavedSublets.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Remove(s);
+                }
+                foreach (var r in _context.Roommates.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Remove(r);
+                }
+                return null;
+            } catch (DbUpdateException e)
+            {
+                throw new DbUpdateException("error", e);
+            }
+        }
+
         public void CreateRoommates(FullSubletModel fsm)
         {
             try
