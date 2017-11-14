@@ -72,7 +72,7 @@ namespace sublettr.Repos
             try
             {
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl, fsm.Price);
                
                 var newSub = _context.Sublets.Add(sm);
                 _context.SaveChanges();
@@ -120,11 +120,12 @@ namespace sublettr.Repos
                 _mapper.FillNulls(oldFsm, fsm);
 
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.Price);
 
                 SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
                 oldSm.Address = sm.Address;
                 oldSm.Description = sm.Description;
+                oldSm.Price = sm.Price;
 
                 _context.Sublets.Update(oldSm);
                 _context.SaveChanges();

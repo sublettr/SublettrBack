@@ -11,29 +11,27 @@ namespace sublettr.Models
         public string Address { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public float Price { get; set; }
 
         public SubletModel()
         {
         }
 
-        public SubletModel(string email, string address)
+        public SubletModel(string email, string address, float price)
         {
             this.Email = email;
             this.Address = address;
             this.Description = "New Sublet";
+            Price = price;
         }
 
-        public SubletModel(string email, string address, string desc)
+        public SubletModel(string email, string address, string desc, float price) : this(email, address, price)
         {
-            this.Email = email;
-            this.Address = address;
             this.Description = desc;
         }
 
-        public SubletModel(string email, string address, string desc, string imageUrl)
+        public SubletModel(string email, string address, string desc, string imageUrl, float price) : this(email, address, price)
         {
-            this.Email = email;
-            this.Address = address;
             this.Description = desc;
             this.ImageUrl = imageUrl;
         }
