@@ -98,28 +98,36 @@ namespace sublettr.Repos
             {
                 foreach (var t in _context.Tags.Where(t => t.SubletID == id).ToList())
                 {
-                    _context.Remove(t);
+                    _context.Tags.Remove(t);
                 }
+                _context.SaveChanges();
                 foreach (var s in _context.Sublets.Where(t => t.ID == id).ToList())
                 {
-                    _context.Remove(s);
+                    _context.Sublets.Remove(s);
                 }
                 foreach (var d in _context.SubletData.Where(t => t.SubletID == id).ToList())
                 {
-                    _context.Remove(d);
+                    _context.SubletData.Remove(d);
                 }
                 foreach (var s in _context.SavedSublets.Where(t => t.SubletID == id).ToList())
                 {
-                    _context.Remove(s);
+                    _context.SavedSublets.Remove(s);
                 }
                 foreach (var r in _context.Roommates.Where(t => t.SubletID == id).ToList())
                 {
-                    _context.Remove(r);
+                    _context.Roommates.Remove(r);
                 }
-                return null;
+                _context.SaveChanges();
+                dynamic jsonResult = new JObject();
+                jsonResult.Result = "Success";
+                jsonResult.SubletID = id;
+                return jsonResult;
             } catch (DbUpdateException e)
             {
-                throw new DbUpdateException("error", e);
+                dynamic jsonResult = new JObject();
+                jsonResult.Result = "Failed";
+                jsonResult.Error = "DbUpdateException: " + e.ToString();
+                return jsonResult;
             }
         }
 

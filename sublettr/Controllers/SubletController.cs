@@ -75,6 +75,13 @@ namespace sublettr.Controllers
         [HttpDelete("{id}")]
         public JObject Delete(int id)
         {
+            if (Get(id) == null)
+            {
+                dynamic failed = new JObject();
+                failed.Result = "Failed";
+                failed.Error = "No sublet with the ID specified";
+                return failed;
+            }
             return _subletRepo.DeleteSublet(id);
         }
 
