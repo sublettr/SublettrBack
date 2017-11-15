@@ -89,7 +89,7 @@ namespace sublettr.Controllers
             return _subletRepo.GetTags();
         }
 
-        // POST api/sublet/rate/3
+        // POST api/sublet/rate/3/5
         [HttpPost("rate/{id}/{rating}")]
         public double PostRating(int id, int rating)
         {
