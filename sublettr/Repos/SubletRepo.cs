@@ -72,7 +72,7 @@ namespace sublettr.Repos
             try
             {
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl, fsm.Price);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl, fsm.Price, fsm.Rating);
                
                 var newSub = _context.Sublets.Add(sm);
                 _context.SaveChanges();
@@ -120,12 +120,13 @@ namespace sublettr.Repos
                 _mapper.FillNulls(oldFsm, fsm);
 
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.Price);
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.Price, fsm.Rating);
 
                 SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
                 oldSm.Address = sm.Address;
                 oldSm.Description = sm.Description;
                 oldSm.Price = sm.Price;
+                oldSm.Rating = sm.Rating;
 
                 _context.Sublets.Update(oldSm);
                 _context.SaveChanges();
@@ -149,6 +150,18 @@ namespace sublettr.Repos
             {
                 throw new DbUpdateException("error", e);
             }
+        }
+
+        public double UpdateRating(int id, int rating)
+        {
+            SubletModel sm = GetSublet(id);
+            sm.RatingNumber += 1;
+            sm.RatingTotal += rating;
+            sm.Rating = (double) sm.RatingTotal / sm.RatingNumber;
+
+            _context.Sublets.Update(sm);
+            _context.SaveChanges();
+            return sm.Rating;
         }
 
         public void UpdateTags(FullSubletModel fsm)

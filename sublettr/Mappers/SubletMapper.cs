@@ -20,7 +20,8 @@ namespace sublettr.Mappers
                 Roommates = roommates,
                 OpenHouse = entity.OpenHouse,
                 Tags = tags,
-                ImageUrl = model.ImageUrl
+                ImageUrl = model.ImageUrl,
+                Rating = model.Rating
             };
 
             return fsm;
