@@ -92,6 +92,45 @@ namespace sublettr.Repos
             }
         }
 
+        public JObject DeleteSublet(int id)
+        {
+            try
+            {
+                foreach (var t in _context.Tags.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Tags.Remove(t);
+                }
+                _context.SaveChanges();
+                foreach (var s in _context.Sublets.Where(t => t.ID == id).ToList())
+                {
+                    _context.Sublets.Remove(s);
+                }
+                foreach (var d in _context.SubletData.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.SubletData.Remove(d);
+                }
+                foreach (var s in _context.SavedSublets.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.SavedSublets.Remove(s);
+                }
+                foreach (var r in _context.Roommates.Where(t => t.SubletID == id).ToList())
+                {
+                    _context.Roommates.Remove(r);
+                }
+                _context.SaveChanges();
+                dynamic jsonResult = new JObject();
+                jsonResult.Result = "Success";
+                jsonResult.SubletID = id;
+                return jsonResult;
+            } catch (DbUpdateException e)
+            {
+                dynamic jsonResult = new JObject();
+                jsonResult.Result = "Failed";
+                jsonResult.Error = "DbUpdateException: " + e.ToString();
+                return jsonResult;
+            }
+        }
+
         public void CreateRoommates(FullSubletModel fsm)
         {
             try
