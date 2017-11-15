@@ -88,5 +88,20 @@ namespace sublettr.Controllers
         {
             return _subletRepo.GetTags();
         }
+
+        // POST api/sublet/rate/3
+        [HttpPost("rate/{id}/{rating}")]
+        public double PostRating(int id, int rating)
+        {
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Model state is invalid");
+                return -1;
+            }
+            else
+            {
+                return _subletRepo.UpdateRating(id, rating);
+            }
+        }
     }
 }

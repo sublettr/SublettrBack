@@ -15,11 +15,12 @@ namespace sublettr.Models
         public string[] Tags { get; set; }
         public RoommateEntity[] Roommates { get; set; }
         public string ImageUrl { get; set; }
-        public float Price { get; set; }
+        public double Price { get; set; }
+        public double Rating { get; set; }
 
         public FullSubletModel(int id, string email, string address, string description, 
                                RoommateEntity[] roommates, bool isFurnished, string[] tags, string imageUrl,
-                               float price
+                               double price, double rating
                                ) : this(id, email, address, price)
         {
             Description = description;
@@ -27,9 +28,10 @@ namespace sublettr.Models
             IsFurnished = isFurnished;
             Tags = tags;
             ImageUrl = imageUrl;
+            Rating = rating;
         }
 
-        public FullSubletModel(int id, string email, string address, float price)
+        public FullSubletModel(int id, string email, string address, double price)
         {
             this.ID = id;
             this.Email = email;
