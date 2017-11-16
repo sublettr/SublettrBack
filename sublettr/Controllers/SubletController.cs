@@ -111,5 +111,12 @@ namespace sublettr.Controllers
                 return _subletRepo.UpdateRating(id, rating);
             }
         }
+
+        // POST api/sublet/filter/
+        [HttpPost("filter/")]
+        public JsonResult Filter([FromBody]FilterParameters param)
+        {
+            return Json(param);
+        }
     }
 }
