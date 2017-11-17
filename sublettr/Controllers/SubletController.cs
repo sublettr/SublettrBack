@@ -106,17 +106,18 @@ namespace sublettr.Controllers
                 Console.WriteLine("Model state is invalid");
                 return -1;
             }
-            else
-            {
                 return _subletRepo.UpdateRating(id, rating);
-            }
         }
 
         // POST api/sublet/filter/
         [HttpPost("filter/")]
         public JsonResult Filter([FromBody]FilterParameters param)
         {
-            return Json(param);
+            if (!ModelState.IsValid)
+            {
+                return Json("Model state is invalid");
+            }
+            return _subletRepo.Filter(param);
         }
     }
 }

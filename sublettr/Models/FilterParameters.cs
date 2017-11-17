@@ -14,6 +14,11 @@ namespace sublettr.Models
 
         public FilterParameters()
         {
+            this.MinPrice = -1;
+            this.MaxPrice = -1;
+            this.MinRating = -1;
+            this.MaxRating = -1;
+            this.IsFurnished = -1;
         }
     }
 }
