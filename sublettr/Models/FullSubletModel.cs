@@ -36,7 +36,7 @@ namespace sublettr.Models
             this.ID = id;
             this.Email = email;
             this.Address = address;
-            Price = price;
+            this.Price = price;
         }
 
         public FullSubletModel()

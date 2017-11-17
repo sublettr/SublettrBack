@@ -7,8 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace sublettr.Repos
 {
@@ -129,6 +131,41 @@ namespace sublettr.Repos
                 jsonResult.Error = "DbUpdateException: " + e.ToString();
                 return jsonResult;
             }
+        }
+
+        internal JsonResult Filter(FilterParameters param)
+        {
+            IList<SubletModel> sm = GetSublets();
+            if (param.MinPrice != -1)
+                foreach (var s in _context.Sublets.Where(s => s.Price < param.MinPrice))
+                    sm.Remove(s);
+            if (param.MaxPrice != -1)
+                foreach (var s in _context.Sublets.Where(s => s.Price > param.MaxPrice))
+                    sm.Remove(s);
+            if (param.MinRating != -1)
+                foreach (var s in _context.Sublets.Where(s => s.Rating < param.MinRating))
+                    sm.Remove(s);
+            if (param.MaxRating != -1)
+                foreach (var s in _context.Sublets.Where(s => s.Rating > param.MaxRating))
+                    sm.Remove(s);
+            if (param.IsFurnished != -1)
+            {
+                if (param.IsFurnished > 0)
+                    foreach (var s in _context.SubletData.Where(s => s.IsFurnished == false))
+                        sm.Remove(GetSublet(s.SubletID));
+                else 
+                    foreach (var s in _context.SubletData.Where(s => s.IsFurnished == true))
+                        sm.Remove(GetSublet(s.SubletID));
+            }
+            if (param.Tags.Any())
+            {
+                foreach (var t in param.Tags)
+                {
+                    foreach (var s in _context.TagIndex.Where(s => !s.Tag.Equals(t)))
+                        sm.Remove(GetSublet(s.ID));
+                }
+            }
+            return new JsonResult(sm);
         }
 
         public void CreateRoommates(FullSubletModel fsm)
