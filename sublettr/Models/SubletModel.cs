@@ -1,32 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using sublettr.Entities;
 
 namespace sublettr.Models
 {
     public class SubletModel
     {
-       
-		public int id { get; set; }
-		public int userId { get; set; }
-		public string address { get; set; }
-		public string description { get; set; }
+        [Key]
+        public int ID { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        public double Price { get; set; }
+        public double Rating { get; set; }
+        public int RatingTotal { get; set; }
+        public int RatingNumber { get; set; }
 
-        public SubletModel(int id, int userId, string address)
+
+        public SubletModel()
         {
-            this.userId = userId;
-            this.id = id;
-            this.address = address;
-            this.description = "New Sublet";
         }
 
-        public SubletModel(int id, int userId, string address, string desc)
+        public SubletModel(string email, string address, double price)
         {
-            this.userId = userId;
-            this.id = id;
-            this.address = address;
-            this.description = desc;
+            this.Email = email;
+            this.Address = address;
+            this.Description = "New Sublet";
+            Price = price;
+        }
+
+        public SubletModel(string email, string address, string desc, double price, double rating) : this(email, address, price)
+        {
+            this.Description = desc;
+            this.Rating = rating;
+        }
+
+        public SubletModel(string email, string address, string desc, string imageUrl, double price, double rating) : this(email, address, price)
+        {
+            this.Description = desc;
+            this.ImageUrl = imageUrl;
+            this.Rating = Rating;
         }
 
     }
