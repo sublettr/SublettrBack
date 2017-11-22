@@ -196,13 +196,13 @@ namespace sublettr.Repos
                 _mapper.FillNulls(oldFsm, fsm);
 
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
-                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.Price, fsm.Rating);
-
+                SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl, fsm.Price, fsm.Rating);
                 SubletModel oldSm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
                 oldSm.Address = sm.Address;
                 oldSm.Description = sm.Description;
                 oldSm.Price = sm.Price;
                 oldSm.Rating = sm.Rating;
+                oldSm.ImageUrl = sm.ImageUrl;
 
                 _context.Sublets.Update(oldSm);
                 _context.SaveChanges();
