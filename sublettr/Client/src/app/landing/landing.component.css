@@ -1,0 +1,122 @@
+.landing-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.sidebar {
+  background-color: var(--GhostWhite);
+  padding-right: 0;
+  min-height: 100vh;
+  border-right: 1.5px solid rgba(0,0,0,.125);
+}
+
+.sidebar .sidebar-header {
+  position: relative;
+  height: 157.5px;
+  margin-bottom: 8px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.sidebar .sidebar-header.header-cover {
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.sidebar .sidebar-brand {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  padding: 0;
+  padding-left: 16px;
+  padding-right: 56px;
+  text-decoration: none;
+  clear: both;
+  font-weight: 500;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  color: var(--GrayNurse);
+}
+.sidebar .sidebar-brand:hover,
+.sidebar .sidebar-brand:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.sidebar .input-rounded {
+  width: 100px;
+  border-radius: 1em;
+}
+
+.sidebar ul {
+  padding: 20px;
+}
+
+.sidebar p {
+  font-weight: bold;
+}
+
+.sidebar .components {
+  margin: 30px 20px;
+}
+
+
+.search-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.search {
+  background: white;
+  min-height: 100%;
+}
+
+.search-spacer {
+  flex: 1 1 auto;
+}
+
+.listing-card {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 20px 20px;
+  background: var(--GhostWhite);
+}
+
+.listing-card-row {
+  width: 100%;
+  display: inline-block;
+}
+
+.listing-card mat-card-header {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.listing-card mat-card-header-text {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-btn {
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.card-img-top {
+ height: 300px;
+}
