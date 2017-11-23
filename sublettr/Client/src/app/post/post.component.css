@@ -1,0 +1,39 @@
+.post-page {
+  /*color: var(--LightGray)*/
+}
+
+.post-h1 {
+  margin: 0 auto;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.example-form {
+  width: auto;
+  height: auto;
+  background-color: inherit;
+  left:0; right:0;
+  top:0; bottom:0;
+  padding: 50px 50px;
+
+  /*this to solve "the content will not be cut when the window is smaller than the content": */
+  max-width:100%;
+  max-height:100%;
+  overflow:auto;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.btn-landing {
+  float: right;
+}
+
+.photo-upload {
+  margin-bottom: 15px;
+}
+
+.form-check-label {
+  padding-left: 0;
+}
