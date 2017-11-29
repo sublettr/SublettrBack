@@ -56,13 +56,14 @@ namespace sublettr.Controllers
                 return -1;
             }
 
-            ThreadEntity te = _context.Threads.Where(t => t.ID == messageEntity.ThreadID).First();
+            ThreadEntity te = _context.Threads.Where(t => t.ID == threadID).First();
 
             if(te.UserAID != messageEntity.AuthorID || te.UserBID != messageEntity.AuthorID)
             {
                 return -2;
             }
 
+            messageEntity.ThreadID = threadID;
             MessageEntity me =_context.Messages.Add(messageEntity).Entity;
             _context.SaveChanges();
             messageEntity.ID = me.ID;
