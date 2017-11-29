@@ -21,140 +21,87 @@ namespace sublettr.Controllers
             _context = context;
         }
 
-        // GET: api/Message
-        [HttpGet("/thread/{threadID}")]
+        // GET: api/Message/messages/thread/5
+        [HttpGet("messages/thread/{threadID:int}")]
         public IEnumerable<MessageEntity> GetMessagesInThread([FromRoute] int threadID)
         {
             return _context.Messages.Where(m => m.ThreadID == threadID);
         }
 
         // GET: api/Message/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetMessageEntity([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public MessageEntity GetMessageEntity([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return null;
             }
 
-            var messageEntity = await _context.Messages.SingleOrDefaultAsync(m => m.ID == id);
+            var messageEntity = _context.Messages.SingleOrDefault(m => m.ID == id);
 
             if (messageEntity == null)
             {
-                return NotFound();
+                return null;
             }
 
-            return Ok(messageEntity);
+            return messageEntity;
         }
 
-        // PUT: api/Message/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMessageEntity([FromRoute] int id, [FromBody] MessageEntity messageEntity)
+        // POST: api/Message/5
+        [HttpPost("{threadID:int}")]
+        public int PostMessageEntity([FromRoute] int threadID, [FromBody] MessageEntity messageEntity)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return -1;
             }
-
-            if (id != messageEntity.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(messageEntity).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MessageEntityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Message
-        [HttpPost]
-        public async Task<IActionResult> PostMessageEntity([FromBody] MessageEntity messageEntity)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Messages.Add(messageEntity);
-            await _context.SaveChangesAsync();
 
             ThreadEntity te = _context.Threads.Where(t => t.ID == messageEntity.ThreadID).First();
+
+            MessageEntity me =_context.Messages.Add(messageEntity).Entity;
+            _context.SaveChanges();
+            messageEntity.ID = me.ID;
+
             te.LastMessageID = messageEntity.ID;
             _context.Update(te);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            return CreatedAtAction("GetMessageEntity", new { id = messageEntity.ID }, messageEntity);
+            return messageEntity.ID;
         }
 
-        // POST: api/Message/thread
-        [HttpPost("/thread")]
-        public async Task<IActionResult> PostThreadCreate([FromBody] ThreadEntity te)
+        // POST: api/Message/thread/create
+        [HttpPost("thread/create")]
+        public int PostThreadCreate([FromBody] ThreadEntity te)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return -1;
             }
-
+            te.LastMessageID = null;
             ThreadEntity createdTE = _context.Threads.Add(te).Entity;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
 
-            return CreatedAtAction("GetThread", new { id = createdTE.ID }, te);
+            return createdTE.ID;
         }
 
-        [HttpGet("/thread/{threadID}")]
-        public async Task<IActionResult> GetThread([FromRoute] int threadId)
+        // GET: api/Message/thread/5
+        [HttpGet("thread/{threadID:int}")]
+        public ThreadEntity GetThread([FromRoute] int threadId)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return null;
             }
 
-            var te = await _context.Threads.SingleOrDefaultAsync(t => t.ID == threadId);
+            var te = _context.Threads.SingleOrDefault(t => t.ID == threadId);
 
             if (te == null)
             {
-                return NotFound();
+                return null;
             }
 
-            return Ok(te);
-        }
-
-        // DELETE: api/Message/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMessageEntity([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var messageEntity = await _context.Messages.SingleOrDefaultAsync(m => m.ID == id);
-            if (messageEntity == null)
-            {
-                return NotFound();
-            }
-
-            _context.Messages.Remove(messageEntity);
-            await _context.SaveChangesAsync();
-
-            return Ok(messageEntity);
+            return te;
         }
 
         private bool MessageEntityExists(int id)
