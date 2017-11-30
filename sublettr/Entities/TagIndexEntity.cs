@@ -10,6 +10,7 @@ namespace sublettr.Entities
     {
         public int ID { get; set; }
         public string Tag { get; set; }
+        public bool IsAmen { get; set; }
 
     }
 }
