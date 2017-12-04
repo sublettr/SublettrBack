@@ -110,6 +110,26 @@ namespace sublettr.Controllers
             return te;
         }
 
+        // GET: api/Message/thread/user/5
+        [HttpGet("thread/user/{userID}")]
+        public IList<ThreadEntity> GetThreadsFromUser([FromRoute] string userID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return null;
+            }
+
+            var tes = _context.Threads.Where(t => t.UserAID.Equals(userID) || t.UserBID.Equals(userID)).ToList();
+
+            if (tes == null)
+            {
+                return null;
+            }
+
+            return tes;
+        }
+
+
         private bool MessageEntityExists(int id)
         {
             return _context.Messages.Any(e => e.ID == id);
