@@ -97,6 +97,12 @@ namespace sublettr.Controllers
             return _subletRepo.GetTags();
         }
 
+        [HttpGet("/tags/amemities")]
+        public List<JObject> GetAmemities()
+        {
+            return _subletRepo.GetAmenities();
+        }
+
         // POST api/sublet/rate/3/5
         [HttpPost("rate/{id}/{rating}")]
         public double PostRating(int id, int rating)

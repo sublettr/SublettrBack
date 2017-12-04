@@ -320,5 +320,19 @@ namespace sublettr.Repos
             }
             return returnJson;
         }
+
+        public List<JObject> GetAmenities()
+        {
+            List<JObject> returnJson = new List<JObject>();
+            var tags = _context.TagIndex.Where(t => t.IsAmen == true).Distinct().ToList();
+            foreach (var t in tags)
+            {
+                dynamic jsonObject = new JObject();
+                jsonObject.label = t;
+                jsonObject.value = t;
+                returnJson.Add(jsonObject);
+            }
+            return returnJson;
+        }
     }
 }
