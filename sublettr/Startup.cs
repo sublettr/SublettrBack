@@ -79,6 +79,7 @@ namespace sublettr
             });
 
 	        app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+	        app.UseCors(builder => builder.WithOrigins("http://sublettr.herokuapp.com/"));
             app.UseAuthentication();
             app.UseMvc();
         }
