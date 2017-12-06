@@ -152,26 +152,19 @@ namespace sublettr.Repos
         internal JsonResult Filter(FilterParameters param)
         {
             IList<SubletModel> sm = GetSublets();
-            foreach (var sub in _context.Sublets.Where(s => s.Price < param.MinPrice || s.Price > param.MaxPrice))
+
+            foreach (var sub in _context.Sublets.Where(s => (s.Price < param.MinPrice || s.Price > param.MaxPrice) || (s.Rating < param.MinRating || s.Rating > param.MaxRating)))
                 sm.Remove(sub);
-            foreach (var sub in _context.Sublets.Where(s => s.Rating < param.MinRating || s.Rating > param.MaxRating))
-                sm.Remove(sub);
-            if (param.IsFurnished != -1)
-            {
-                if (param.IsFurnished > 0)
-                    foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == false))
-                        sm.Remove(GetSublet(sub.SubletID));
-                else
-                    foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == true))
-                        sm.Remove(GetSublet(sub.SubletID));
-            }
+            
+            if (param.IsFurnished == 1)
+                foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == false))
+                    sm.Remove(GetSublet(sub.SubletID));
+            else if (param.IsFurnished == 0)
+                foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == true))
+                    sm.Remove(GetSublet(sub.SubletID));
+            
             if (param.Tags.Any())
             {
-                foreach (var tag in param.Tags)
-                {
-                    foreach (var sub in _context.TagIndex.Where(s => !s.Tag.Equals(tag)))
-                        sm.Remove(GetSublet(sub.ID));
-                }
                 foreach (var sub in sm.ToList())
                 {
                     if (!_context.TagIndex.Any(s => s.ID == sub.ID))
@@ -179,6 +172,18 @@ namespace sublettr.Repos
                         sm.Remove(sub);
                     }
                 }
+                foreach (var tag in param.Tags)
+                {
+                    if (!sm.Any())
+                        break;
+                    foreach (var sub in _context.TagIndex.Where(s => !s.Tag.Equals(tag)))
+                    {
+                        if (!sm.Any())
+                            break;
+                        sm.Remove(GetSublet(sub.ID));
+                    }
+                }
+
             }
             return new JsonResult(sm);
         }
