@@ -152,12 +152,10 @@ namespace sublettr.Repos
         internal JsonResult Filter(FilterParameters param)
         {
             IList<SubletModel> sm = GetSublets();
-            if (param.MinPrice != -1)
-                foreach (var sub in _context.Sublets.Where(s => s.Price < param.MinPrice || s.Price > param.MaxPrice))
-                    sm.Remove(sub);
-            if (param.MinRating != -1)
-                foreach (var sub in _context.Sublets.Where(s => s.Rating < param.MinRating || s.Rating > param.MaxRating))
-                    sm.Remove(sub);
+            foreach (var sub in _context.Sublets.Where(s => s.Price < param.MinPrice || s.Price > param.MaxPrice))
+                sm.Remove(sub);
+            foreach (var sub in _context.Sublets.Where(s => s.Rating < param.MinRating || s.Rating > param.MaxRating))
+                sm.Remove(sub);
             if (param.IsFurnished != -1)
             {
                 if (param.IsFurnished > 0)
@@ -174,7 +172,7 @@ namespace sublettr.Repos
                     foreach (var sub in _context.TagIndex.Where(s => !s.Tag.Equals(tag)))
                         sm.Remove(GetSublet(sub.ID));
                 }
-                foreach (var sub in sm)
+                foreach (var sub in sm.ToList())
                 {
                     if (!_context.TagIndex.Any(s => s.ID == sub.ID))
                     {
