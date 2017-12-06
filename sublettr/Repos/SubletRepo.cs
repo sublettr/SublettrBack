@@ -25,7 +25,7 @@ namespace sublettr.Repos
         public SubletRepo(RDSContext context, SubletMapper mapper, ElasticClient elastic)
         {
             _context = context;
-            _mapper = mapper;      
+            _mapper = mapper;
             _elastic = elastic;
         }
 
@@ -47,10 +47,10 @@ namespace sublettr.Repos
             SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.Email.Equals(sm.Email)).FirstOrDefault();
 
             List<string> tags = (from t in _context.Tags
-                                          join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
-                                          from s in t_ti.DefaultIfEmpty()
-                                          where t.SubletID == id
-                                          select s.Tag ).ToList();
+                                 join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
+                                 from s in t_ti.DefaultIfEmpty()
+                                 where t.SubletID == id
+                                 select s.Tag).ToList();
             RoommateEntity[] roommates = _context.Roommates.Where(r => r.SubletID == id).ToArray();
             FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), roommates);
             return fsm;
@@ -60,7 +60,7 @@ namespace sublettr.Repos
         {
             List<SubletModel> saved = new List<SubletModel>();
             List<int> ids = _context.SavedSublets.Where(ss => ss.Email.Equals(email)).Select(ss => ss.SubletID).ToList();
-            foreach(var id in ids)
+            foreach (var id in ids)
             {
                 saved.Add(GetSublet(id));
             }
@@ -78,7 +78,7 @@ namespace sublettr.Repos
             {
                 SubletDataEntity sde = _mapper.ExtractDataEntity(fsm);
                 SubletModel sm = new SubletModel(fsm.Email, fsm.Address, fsm.Description, fsm.ImageUrl, fsm.Price, fsm.Rating);
-               
+
                 var newSub = _context.Sublets.Add(sm);
                 _context.SaveChanges();
 
@@ -90,7 +90,8 @@ namespace sublettr.Repos
                 UpdateTags(fsm);
                 CreateRoommates(fsm);
 
-                SubletType esSublet = new SubletType {
+                SubletType esSublet = new SubletType
+                {
                     ID = fsm.ID,
                     Address = fsm.Address,
                     Description = fsm.Description,
@@ -99,8 +100,9 @@ namespace sublettr.Repos
                 _elastic.IndexSublet(esSublet);
 
                 return newSub.Entity.ID;
-                
-            } catch(DbUpdateException e)
+
+            }
+            catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
             }
@@ -137,7 +139,8 @@ namespace sublettr.Repos
                 jsonResult.Result = "Success";
                 jsonResult.SubletID = id;
                 return jsonResult;
-            } catch (DbUpdateException e)
+            }
+            catch (DbUpdateException e)
             {
                 dynamic jsonResult = new JObject();
                 jsonResult.Result = "Failed";
@@ -150,32 +153,33 @@ namespace sublettr.Repos
         {
             IList<SubletModel> sm = GetSublets();
             if (param.MinPrice != -1)
-                foreach (var s in _context.Sublets.Where(s => s.Price < param.MinPrice))
-                    sm.Remove(s);
-            if (param.MaxPrice != -1)
-                foreach (var s in _context.Sublets.Where(s => s.Price > param.MaxPrice))
-                    sm.Remove(s);
+                foreach (var sub in _context.Sublets.Where(s => s.Price < param.MinPrice || s.Price > param.MaxPrice))
+                    sm.Remove(sub);
             if (param.MinRating != -1)
-                foreach (var s in _context.Sublets.Where(s => s.Rating < param.MinRating))
-                    sm.Remove(s);
-            if (param.MaxRating != -1)
-                foreach (var s in _context.Sublets.Where(s => s.Rating > param.MaxRating))
-                    sm.Remove(s);
+                foreach (var sub in _context.Sublets.Where(s => s.Rating < param.MinRating || s.Rating > param.MaxRating))
+                    sm.Remove(sub);
             if (param.IsFurnished != -1)
             {
                 if (param.IsFurnished > 0)
-                    foreach (var s in _context.SubletData.Where(s => s.IsFurnished == false))
-                        sm.Remove(GetSublet(s.SubletID));
-                else 
-                    foreach (var s in _context.SubletData.Where(s => s.IsFurnished == true))
-                        sm.Remove(GetSublet(s.SubletID));
+                    foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == false))
+                        sm.Remove(GetSublet(sub.SubletID));
+                else
+                    foreach (var sub in _context.SubletData.Where(s => s.IsFurnished == true))
+                        sm.Remove(GetSublet(sub.SubletID));
             }
             if (param.Tags.Any())
             {
-                foreach (var t in param.Tags)
+                foreach (var tag in param.Tags)
                 {
-                    foreach (var s in _context.TagIndex.Where(s => !s.Tag.Equals(t)))
-                        sm.Remove(GetSublet(s.ID));
+                    foreach (var sub in _context.TagIndex.Where(s => !s.Tag.Equals(tag)))
+                        sm.Remove(GetSublet(sub.ID));
+                }
+                foreach (var sub in sm)
+                {
+                    if (!_context.TagIndex.Any(s => s.ID == sub.ID))
+                    {
+                        sm.Remove(sub);
+                    }
                 }
             }
             return new JsonResult(sm);
@@ -233,7 +237,7 @@ namespace sublettr.Repos
 
                 UpdateTags(fsm);
                 UpdateRoommates(fsm);
-                SubletType esSublet = new SubletType 
+                SubletType esSublet = new SubletType
                 {
                     ID = fsm.ID,
                     Description = fsm.Description,
@@ -244,7 +248,8 @@ namespace sublettr.Repos
                 _elastic.IndexSublet(esSublet);
                 return id;
 
-            } catch (DbUpdateException e)
+            }
+            catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
             }
@@ -255,7 +260,7 @@ namespace sublettr.Repos
             SubletModel sm = GetSublet(id);
             sm.RatingNumber += 1;
             sm.RatingTotal += rating;
-            sm.Rating = (double) sm.RatingTotal / sm.RatingNumber;
+            sm.Rating = (double)sm.RatingTotal / sm.RatingNumber;
 
             _context.Sublets.Update(sm);
             _context.SaveChanges();
@@ -290,7 +295,8 @@ namespace sublettr.Repos
                     _context.Tags.Add(tagToAdd);
                     _context.SaveChanges();
                 }
-            } catch (DbUpdateException e)
+            }
+            catch (DbUpdateException e)
             {
                 throw new DbUpdateException("error", e);
             }
@@ -317,11 +323,13 @@ namespace sublettr.Repos
 
         public void SaveSublet(int id, string email)
         {
-            if(!_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
+            if (!_context.SavedSublets.Any(ss => ss.Email.Equals(email) && ss.SubletID == id))
             {
                 _context.SavedSublets.Add(new SavedSubletEntity() { Email = email, SubletID = id });
                 _context.SaveChanges();
-            } else {
+            }
+            else
+            {
                 SavedSubletEntity toUnFav = new SavedSubletEntity() { Email = email, SubletID = id };
                 _context.SavedSublets.Attach(toUnFav);
                 _context.SavedSublets.Remove(toUnFav);
@@ -359,7 +367,8 @@ namespace sublettr.Repos
 
         public JsonResult Search(string terms)
         {
-            if(string.IsNullOrEmpty(terms)) {
+            if (string.IsNullOrEmpty(terms))
+            {
                 return new JsonResult(new List<FullSubletModel>());
             }
 
@@ -369,7 +378,7 @@ namespace sublettr.Repos
                 .Select(fsm => GetFullSublet(int.Parse(fsm.Id)))
                 .ToList();
 
-           return new JsonResult(result);
+            return new JsonResult(result);
         }
     }
 }
