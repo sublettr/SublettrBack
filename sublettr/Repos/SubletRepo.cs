@@ -168,7 +168,6 @@ namespace sublettr.Repos
                         sm.Add(GetSublet(sub.ID));
                     }
                 }
-                Console.WriteLine("Finished tag loop");
                 foreach (var sublet in sm.ToList())
                 {
                     if (sublet == null)
@@ -180,7 +179,6 @@ namespace sublettr.Repos
                     if (param.Tags.Except(GetSubletTags(sublet.ID)).Any())
                         sm.Remove(sublet);
                 }
-                Console.WriteLine("Finished remove loop");
                 if (!sm.Any())
                     return new JsonResult(new List<SubletModel>());
             } else {
