@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using sublettr.DataAccess;
+using sublettr.DataAccess.Elastic;
 using Microsoft.EntityFrameworkCore;
 using sublettr.Repos;
 using sublettr.Mappers;
@@ -28,6 +29,8 @@ namespace sublettr
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            ElasticClient.Initialize();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -60,6 +63,7 @@ namespace sublettr
             services.AddScoped<AccountRepo>();
             services.AddSingleton<SubletMapper>();
             services.AddSingleton<ApplicationUserMapper>();
+            services.AddSingleton<ElasticClient>();
 
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
         }

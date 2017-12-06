@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using sublettr.DataAccess;
+using sublettr.DataAccess.Elastic;
 using sublettr.Entities;
 using sublettr.Mappers;
 using sublettr.Models;
@@ -19,11 +20,13 @@ namespace sublettr.Repos
 
         private readonly RDSContext _context;
         private readonly SubletMapper _mapper;
+        private readonly ElasticClient _elastic;
 
-        public SubletRepo(RDSContext context, SubletMapper mapper)
+        public SubletRepo(RDSContext context, SubletMapper mapper, ElasticClient elastic)
         {
             _context = context;
             _mapper = mapper;      
+            _elastic = elastic;
         }
 
         public SubletModel GetSublet(int id)
@@ -86,6 +89,15 @@ namespace sublettr.Repos
 
                 UpdateTags(fsm);
                 CreateRoommates(fsm);
+
+                SubletType esSublet = new SubletType {
+                    ID = fsm.ID,
+                    Address = fsm.Address,
+                    Description = fsm.Description,
+                    Tags = fsm.Tags
+                };
+                _elastic.IndexSublet(esSublet);
+
                 return newSub.Entity.ID;
                 
             } catch(DbUpdateException e)
@@ -120,6 +132,7 @@ namespace sublettr.Repos
                     _context.Roommates.Remove(r);
                 }
                 _context.SaveChanges();
+                _elastic.DeleteSublet(id);
                 dynamic jsonResult = new JObject();
                 jsonResult.Result = "Success";
                 jsonResult.SubletID = id;
@@ -220,6 +233,15 @@ namespace sublettr.Repos
 
                 UpdateTags(fsm);
                 UpdateRoommates(fsm);
+                SubletType esSublet = new SubletType 
+                {
+                    ID = fsm.ID,
+                    Description = fsm.Description,
+                    Address = fsm.Address,
+                    Tags = fsm.Tags
+                };
+
+                _elastic.IndexSublet(esSublet);
                 return id;
 
             } catch (DbUpdateException e)
@@ -333,6 +355,21 @@ namespace sublettr.Repos
                 returnJson.Add(jsonObject);
             }
             return returnJson;
+        }
+
+        public JsonResult Search(string terms)
+        {
+            if(string.IsNullOrEmpty(terms)) {
+                return new JsonResult(new List<FullSubletModel>());
+            }
+
+            var response = _elastic.SearchSublets(terms);
+
+            var result = response.Hits
+                .Select(fsm => GetFullSublet(int.Parse(fsm.Id)))
+                .ToList();
+
+           return new JsonResult(result);
         }
     }
 }

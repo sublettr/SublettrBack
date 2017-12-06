@@ -125,5 +125,10 @@ namespace sublettr.Controllers
             }
             return _subletRepo.Filter(param);
         }
+
+        [HttpPost("search/{query}")]
+        public JsonResult Search(string query) {
+            return _subletRepo.Search(query);
+        }
     }
 }
