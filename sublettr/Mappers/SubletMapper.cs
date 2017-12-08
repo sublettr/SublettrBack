@@ -11,7 +11,7 @@ namespace sublettr.Mappers
     public class SubletMapper
     {
 
-        public FullSubletModel Map(SubletModel model, SubletDataEntity entity, string[] tags, RoommateEntity[] roommates)
+        public FullSubletModel Map(SubletModel model, SubletDataEntity entity, TagIndexEntity[] tags, RoommateEntity[] roommates)
         {
             FullSubletModel fsm = new FullSubletModel(model.ID, model.Email, model.Address, model.Price)
             {
