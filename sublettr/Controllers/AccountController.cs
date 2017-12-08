@@ -91,12 +91,12 @@ namespace sublettr.Controllers
             var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.ErrorMessage));
             if (ModelState.IsValid)
             {
-                var pwCheck = await _userManager.FindByEmailAsync(Credentials.Email);
-                if (pwCheck == null)
+                var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                if (user == null)
                 {
                     return new JsonResult("No user found for email") { StatusCode = 401 };
                 }
-                var passwordCheck = await _signInManager.UserManager.CheckPasswordAsync(pwCheck, Credentials.Password);
+                var passwordCheck = await _signInManager.UserManager.CheckPasswordAsync(user, Credentials.Password);
                 if (!passwordCheck)
                 {
                     return new JsonResult("Password is incorrect") { StatusCode = 401 };
@@ -104,7 +104,6 @@ namespace sublettr.Controllers
                 var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
                     return new JsonResult(new Dictionary<string, object>
                     {
                         { "access_token", GetAccessToken(Credentials.Email) },
