@@ -12,14 +12,14 @@ namespace sublettr.Models
 		public string Description { get; set; }
 		public bool IsFurnished { get; set; }
         public DateTime? OpenHouse { get; set; }
-        public TagIndexEntity[] Tags { get; set; }
+        public string[] Tags { get; set; }
         public RoommateEntity[] Roommates { get; set; }
         public string ImageUrl { get; set; }
         public double Price { get; set; }
         public double Rating { get; set; }
 
         public FullSubletModel(int id, string email, string address, string description, 
-                               RoommateEntity[] roommates, bool isFurnished, TagIndexEntity[] tags, string imageUrl,
+                               RoommateEntity[] roommates, bool isFurnished, string[] tags, string imageUrl,
                                double price, double rating
                                ) : this(id, email, address, price)
         {

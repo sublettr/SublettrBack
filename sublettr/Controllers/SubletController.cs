@@ -92,13 +92,13 @@ namespace sublettr.Controllers
         }
 
         [HttpGet("/tags")]
-        public IList<TagIndexEntity> GetTags()
+        public List<JObject> GetTags()
         {
             return _subletRepo.GetTags();
         }
 
         [HttpGet("/tags/amemities")]
-        public IList<TagIndexEntity> GetAmemities()
+        public List<JObject> GetAmemities()
         {
             return _subletRepo.GetAmenities();
         }

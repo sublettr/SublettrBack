@@ -46,19 +46,11 @@ namespace sublettr.Repos
             SubletModel sm = _context.Sublets.Where(s => s.ID == id).FirstOrDefault();
             SubletDataEntity sde = _context.SubletData.Where(sd => sd.SubletID == id && sd.Email.Equals(sm.Email)).FirstOrDefault();
 
-            IList<string> tagNames = (from t in _context.Tags
-                                  join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
-                                  from s in t_ti.DefaultIfEmpty()
-                                  where t.SubletID == id
-                                  select s.Tag).ToList();
-
-            IList<TagIndexEntity> tags = new List<TagIndexEntity>();
-
-            foreach (string s in tagNames)
-            {
-                tags.Add(_context.TagIndex.Where(t => t.Tag.Equals(s)).First());
-            }
-
+            List<string> tags = (from t in _context.Tags
+                                 join ti in _context.TagIndex on t.TagID equals ti.ID into t_ti
+                                 from s in t_ti.DefaultIfEmpty()
+                                 where t.SubletID == id
+                                 select s.Tag).ToList();
             RoommateEntity[] roommates = _context.Roommates.Where(r => r.SubletID == id).ToArray();
             FullSubletModel fsm = _mapper.Map(sm, sde, tags.ToArray(), roommates);
             return fsm;
@@ -301,17 +293,17 @@ namespace sublettr.Repos
                     _context.SaveChanges();
                 }
 
-                foreach (TagIndexEntity s in fsm.Tags)
+                foreach (string s in fsm.Tags)
                 {
-                    if (!_context.TagIndex.Any(ti => ti.Tag == s.Tag))
+                    if (!_context.TagIndex.Any(ti => ti.Tag == s))
                     {
                         // tag not found, add tag to index
-                        TagIndexEntity tagIndexToAdd = s; //new TagIndexEntity { Tag = s };
+                        TagIndexEntity tagIndexToAdd = new TagIndexEntity { Tag = s };
                         _context.TagIndex.Add(tagIndexToAdd);
                         _context.SaveChanges();
                     }
                     // add association
-                    int tagToAddID = s.ID; //_context.TagIndex.Where(t => t.Tag == s).First().ID;
+                    int tagToAddID = _context.TagIndex.Where(t => t.Tag == s).First().ID;
                     TagEntity tagToAdd = new TagEntity { SubletID = fsm.ID, TagID = tagToAddID };
 
                     _context.Tags.Add(tagToAdd);
@@ -359,32 +351,32 @@ namespace sublettr.Repos
             }
         }
 
-        public IList<TagIndexEntity> GetTags()
+        public List<JObject> GetTags()
         {
-            //List<JObject> returnJson = new List<JObject>();
-            var tags = _context.TagIndex.Distinct().ToList();
-            //foreach (var t in tags)
-            //{
-            //    dynamic jsonObject = new JObject();
-            //    jsonObject.label = t;
-            //    jsonObject.value = t;
-            //    returnJson.Add(jsonObject);
-            //}
-            return tags;
+            List<JObject> returnJson = new List<JObject>();
+            var tags = _context.TagIndex.Select(t => t.Tag).Distinct().ToList();
+            foreach (var t in tags)
+            {
+                dynamic jsonObject = new JObject();
+                jsonObject.label = t;
+                jsonObject.value = t;
+                returnJson.Add(jsonObject);
+            }
+            return returnJson;
         }
 
-        public IList<TagIndexEntity> GetAmenities()
+        public List<JObject> GetAmenities()
         {
-            //List<JObject> returnJson = new List<JObject>();
+            List<JObject> returnJson = new List<JObject>();
             var tags = _context.TagIndex.Where(t => t.IsAmen == true).Distinct().ToList();
-            //foreach (var t in tags)
-            //{
-            //    dynamic jsonObject = new JObject();
-            //    jsonObject.label = t;
-            //    jsonObject.value = t;
-            //    returnJson.Add(jsonObject);
-            //}
-            return tags;
+            foreach (var t in tags)
+            {
+                dynamic jsonObject = new JObject();
+                jsonObject.label = t;
+                jsonObject.value = t;
+                returnJson.Add(jsonObject);
+            }
+            return returnJson;
         }
 
         public JsonResult Search(string terms)

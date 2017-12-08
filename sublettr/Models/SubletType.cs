@@ -9,6 +9,6 @@ namespace sublettr.Models
         public int ID { get; set; }
         public string Address { get; set; }
 		public string Description { get; set; }
-        public TagIndexEntity[] Tags {get; set;}
+        public string[] Tags {get; set;}
     }
 }
